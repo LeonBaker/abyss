@@ -388,12 +388,8 @@ trait ActionTrait {
         $krakenExpansion = $this->isKrakenExpansion();
         if ($krakenExpansion) {
             $guarded = $this->guardedBySentinel('lord', $lord_id);
-            if ($guarded !== null) {
-                if ($guarded->playerId == $player_id) {
-                    $this->discardSentinel($guarded->lordId);
-                } else {
-                    throw new BgaVisibleSystemException( "That Lord is not available (reserved by a sentinel)." );
-                } 
+            if ($guarded !== null && $guarded->playerId != $player_id) {
+                throw new BgaVisibleSystemException( "That Lord is not available (reserved by a sentinel)." );
             }
         }
 
@@ -790,6 +786,18 @@ trait ActionTrait {
         foreach ($krakenAllies as $ally) {
             Ally::discard($ally['ally_id']);
             $this->incPlayerNebulis($player_id, $ally['value'] - 1, "recruit-kraken");
+        }
+
+        // Remove Sentinal (if guarded by purchasing player)
+        if ($this->isKrakenExpansion()) {
+            $guarded = $this->guardedBySentinel('lord', $lord_id);
+            if ($guarded !== null) {
+                if ($guarded->playerId == $player_id) {
+                    $this->discardSentinel($guarded->lordId);
+                } else {
+                    throw new BgaVisibleSystemException( "That stack is not available (reserved by a sentinel)." );
+                } 
+            }
         }
 
         // Add the lord to your board!

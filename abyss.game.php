@@ -406,6 +406,13 @@ class Abyss extends Table {
 			$sql = "ALTER TABLE `DBPREFIX_monster` ADD `effect` smallint unsigned NULL DEFAULT NULL";
 			self::applyDbUpgradeToAllDB( $sql );
 		}
+
+        if ($from_version <= 2504201900) {
+            // Update the `player_autopass` field to support 6 factions
+            $sql = "ALTER TABLE `player` CHANGE `player_autopass` `player_autopass` VARCHAR(30) NOT NULL DEFAULT '0,0,0,0,0,0';";
+            self::applyDbUpgradeToAllDB($sql);
+        }
+    
     }
 
 	// Hacks

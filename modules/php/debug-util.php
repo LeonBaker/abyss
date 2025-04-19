@@ -31,7 +31,7 @@ trait DebugUtilTrait {
 
 		//$this->DbQuery("UPDATE player SET player_nebulis = 2");
 		$this->DbQuery("UPDATE player SET player_pearls = 10");
-		$this->DbQuery("UPDATE player SET `player_autopass` = '5;5;5;5;5'");
+		$this->DbQuery("UPDATE player SET `player_autopass` = '5;5;5;5;5;5'");
 		//$this->DbQuery("UPDATE player SET player_keys = 3");
 		//$this->DbQuery("UPDATE location SET place = 1 WHERE location_id = 103");
 		$this->DbQuery("UPDATE lord SET place = 0 WHERE place IN (2, 3, 4, 6)");

@@ -267,9 +267,17 @@ class Abyss implements AbyssGame {
         $('option-seahorse').innerHTML = _('Seahorse');
         $('option-shellfish').innerHTML = _('Shellfish');
         $('option-squid').innerHTML = _('Squid');
+        $('option-kraken').innerHTML = _('Kraken');
         $('text-total').innerHTML = _('Total');
         $('last-round').innerHTML = _('This is the last round of the game!');
-        
+
+         //Show kraken autopass
+        if (gamedatas.krakenExpansion) {
+            const krakenInputs = document.getElementById('kraken-inputs');
+            if (krakenInputs) {
+                krakenInputs.classList.remove('hide-row');
+            }
+        }
         // Only show auto-pass options for actual players
         if (! (this as any).isSpectator) {
             // $('gameplay-options').style.display = this.bRealtime ? 'none' : 'inline-block';
@@ -1692,7 +1700,7 @@ class Abyss implements AbyssGame {
     
     onUpdateAutopass() {
         let autopass = "";
-        for (let faction = 0; faction < 5; faction++) {
+        for (let faction = 0; faction < 6; faction++) {
         let max = 0;
         for (let j = 0; j <= 5; j++) {
             if ($('autopass-'+faction+'-'+j).checked) {

@@ -3837,8 +3837,18 @@ var Abyss = /** @class */ (function () {
         $('option-seahorse').innerHTML = _('Seahorse');
         $('option-shellfish').innerHTML = _('Shellfish');
         $('option-squid').innerHTML = _('Squid');
+        $('option-kraken').innerHTML = _('Kraken');
         $('text-total').innerHTML = _('Total');
         $('last-round').innerHTML = _('This is the last round of the game!');
+        
+        //Show kraken autopass
+        if (gamedatas.krakenExpansion) {
+            const krakenInputs = document.getElementById('kraken-inputs');
+            if (krakenInputs) {
+                krakenInputs.classList.remove('hide-row');
+            }
+        }
+
         // Only show auto-pass options for actual players
         if (!this.isSpectator) {
             // $('gameplay-options').style.display = this.bRealtime ? 'none' : 'inline-block';
@@ -3855,17 +3865,17 @@ var Abyss = /** @class */ (function () {
         var me = gamedatas.players[this.player_id];
         if (me) {
             if (!me.autopass) {
-                me.autopass = "0;0;0;0;0";
+                me.autopass = "0;0;0;0;0;0";
             }
             if (me.autopass) {
                 var pieces = me.autopass.split(";");
-                if (pieces.length > 5) {
-                    pieces = [0, 0, 0, 0, 0];
+                if (pieces.length > 6) {
+                    pieces = [0, 0, 0, 0, 0, 0];
                 }
                 if (pieces.length >= 5) {
                     var firstValue = +pieces[0];
                     var allSame = true;
-                    for (var i_1 = 0; i_1 < 5; i_1++) {
+                    for (var i_1 = 0; i_1 < 6; i_1++) {
                         var max = +pieces[i_1];
                         if (max != firstValue) {
                             allSame = false;
@@ -3894,7 +3904,7 @@ var Abyss = /** @class */ (function () {
                     _loop_6(i_2);
                 }
             };
-            for (var faction = 0; faction < 5; faction++) {
+            for (var faction = 0; faction < 6; faction++) {
                 _loop_4(faction);
             }
             var _loop_5 = function (i_3) {
@@ -3903,7 +3913,7 @@ var Abyss = /** @class */ (function () {
                     for (var j = 0; j <= 5; j++) {
                         $('autopass-all-' + j).checked = i_3 == j;
                     }
-                    for (var faction = 0; faction < 5; faction++) {
+                    for (var faction = 0; faction < 6; faction++) {
                         for (var j = 0; j <= 5; j++) {
                             $('autopass-' + faction + '-' + j).checked = j <= i_3;
                         }
@@ -5131,7 +5141,7 @@ var Abyss = /** @class */ (function () {
     };
     Abyss.prototype.onUpdateAutopass = function () {
         var autopass = "";
-        for (var faction = 0; faction < 5; faction++) {
+        for (var faction = 0; faction < 6; faction++) {
             var max = 0;
             for (var j = 0; j <= 5; j++) {
                 if ($('autopass-' + faction + '-' + j).checked) {

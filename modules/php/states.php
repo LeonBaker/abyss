@@ -1,5 +1,7 @@
 <?php
 
+const factionMap = [0, 1, 2, 3, 4, 10]; // Maps UI indices to backend faction IDs
+
 trait StateTrait {
 
 //////////////////////////////////////////////////////////////////////////////
@@ -254,9 +256,10 @@ trait StateTrait {
             $autopass = $player_obj["player_autopass"];
             if ($autopass) {
                 $values = explode(";", $autopass);
-                if (count($values) >= 5) {
+                if (count($values) >= 6) { // Ensure we have values for all 6 factions
                     $faction = intval($ally["faction"]);
-                    if (in_array($faction, [0,1,2,3,4]) && $values[$faction] >= $ally["value"]) {
+                    $uiIndex = array_search($faction, factionMap); // Map backend faction ID to UI index
+                    if ($uiIndex !== false && $values[$uiIndex] >= $ally["value"]) {
                         # The player wishes to autopass this ally
                         continue;
                     }

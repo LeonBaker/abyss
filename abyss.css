@@ -1774,21 +1774,61 @@ html .lord .lord-desc {
 #gameplay-options {
   margin-top: 10px;
   margin-left: 20px;
-  background-color: #191970;
-  color: white;
+  background-color: #ffffff;
+  color: black;
   display: none;
-  padding: 10px;
+  padding: 20px;
   z-index: 1;
   position: relative;
 }
 
+#gameplay-options > p {
+  margin: 0;
+}
+
 #gameplay-options td {
-  padding: 0 5px;
+  padding: 0 15px;
   text-align: center;
 }
 
 #gameplay-options td:first-child {
   text-align: right;
+}
+
+#gameplay-options #all-inputs input[type='radio'] {
+  accent-color: grey;
+}
+
+#gameplay-options #jellyfish-inputs input[type='radio'] {
+  accent-color: purple;
+}
+
+#gameplay-options #crab-inputs input[type='radio'] {
+  accent-color: red;
+}
+
+#gameplay-options #seahorse-inputs input[type='radio'] {
+  accent-color: #999900;
+}
+
+#gameplay-options #shellfish-inputs input[type='radio'] {
+  accent-color: green;
+}
+
+#gameplay-options #squid-inputs input[type='radio'] {
+  accent-color: blue;
+}
+
+#gameplay-options #kraken-inputs input[type='radio'] {
+  accent-color: black;
+}
+
+#gameplay-options table tr.hide-row{
+  display: none;
+}
+
+#gameplay-options input[type='radio']:hover {
+  cursor: pointer;
 }
 
 /* ICONS */

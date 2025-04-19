@@ -97,7 +97,7 @@
 </div>
 
 <div id="gameplay-options">
-  <b id="option-desc"></b>
+  <p><b id="option-desc"></b></p>
   <br>
   <table>
     <tr>
@@ -109,7 +109,7 @@
       <td>4</td>
       <td>5</td>
     </tr>
-    <tr>
+    <tr id="all-inputs">
       <td id="option-all">All</td>
       <td><input id="autopass-all-0" type="radio"></td>
       <td><input id="autopass-all-1" type="radio"></td>
@@ -118,7 +118,7 @@
       <td><input id="autopass-all-4" type="radio"></td>
       <td><input id="autopass-all-5" type="radio"></td>
     </tr>
-    <tr>
+    <tr id="jellyfish-inputs">
       <td style="color: purple" id="option-jellyfish"></td>
       <td><input id="autopass-0-0" type="radio"></td>
       <td><input id="autopass-0-1" type="radio"></td>
@@ -127,7 +127,7 @@
       <td><input id="autopass-0-4" type="radio"></td>
       <td><input id="autopass-0-5" type="radio"></td>
     </tr>
-    <tr>
+    <tr id="crab-inputs">
       <td style="color: red" id="option-crab"></td>
       <td><input id="autopass-1-0" type="radio"></td>
       <td><input id="autopass-1-1" type="radio"></td>
@@ -136,7 +136,7 @@
       <td><input id="autopass-1-4" type="radio"></td>
       <td><input id="autopass-1-5" type="radio"></td>
     </tr>
-    <tr>
+    <tr id="seahorse-inputs">
       <td style="color: #999900" id="option-seahorse"></td>
       <td><input id="autopass-2-0" type="radio"></td>
       <td><input id="autopass-2-1" type="radio"></td>
@@ -145,7 +145,7 @@
       <td><input id="autopass-2-4" type="radio"></td>
       <td><input id="autopass-2-5" type="radio"></td>
     </tr>
-    <tr>
+    <tr id="shellfish-inputs">
       <td style="color: green" id="option-shellfish"></td>
       <td><input id="autopass-3-0" type="radio"></td>
       <td><input id="autopass-3-1" type="radio"></td>
@@ -154,7 +154,7 @@
       <td><input id="autopass-3-4" type="radio"></td>
       <td><input id="autopass-3-5" type="radio"></td>
     </tr>
-    <tr>
+    <tr id="squid-inputs">
       <td style="color: blue" id="option-squid"></td>
       <td><input id="autopass-4-0" type="radio"></td>
       <td><input id="autopass-4-1" type="radio"></td>
@@ -162,6 +162,15 @@
       <td><input id="autopass-4-3" type="radio"></td>
       <td><input id="autopass-4-4" type="radio"></td>
       <td><input id="autopass-4-5" type="radio"></td>
+    </tr>  
+    <tr id ="kraken-inputs" class="hide-row">
+      <td style="color: black" id="option-kraken"></td>
+      <td><input id="autopass-5-0" type="radio"></td>
+      <td><input id="autopass-5-1" type="radio"></td>
+      <td><input id="autopass-5-2" type="radio"></td>
+      <td><input id="autopass-5-3" type="radio"></td>
+      <td><input id="autopass-5-4" type="radio"></td>
+      <td><input id="autopass-5-5" type="radio"></td>
     </tr>
   </table>
 </div>

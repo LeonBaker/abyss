@@ -86,4 +86,4 @@ ALTER TABLE `player` ADD `player_nebulis` INT UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE `player` ADD `player_keys` INT UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE `player` ADD `player_wounds` INT UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE `player` ADD `player_has_purchased` TINYINT NOT NULL DEFAULT 0;
-ALTER TABLE `player` ADD `player_autopass` VARCHAR(25) NOT NULL DEFAULT '0;0;0;0;0';
+ALTER TABLE `player` ADD `player_autopass` VARCHAR(30) NOT NULL DEFAULT '0;0;0;0;0;0';

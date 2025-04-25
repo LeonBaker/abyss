@@ -407,9 +407,12 @@ class Abyss extends Table {
 			self::applyDbUpgradeToAllDB( $sql );
 		}
 
-        if ($from_version <= 2504201900) {
+        if ($from_version <= 2504201110) {
             // Update the `player_autopass` field to support 6 factions
             $sql = "ALTER TABLE `DBPREFIX_player` CHANGE `player_autopass` `player_autopass` VARCHAR(30) NOT NULL DEFAULT '0,0,0,0,0,0';";
+            self::applyDbUpgradeToAllDB($sql);
+
+            $sql = "UPDATE `DBPREFIX_player` SET `player_autopass` = '0,0,0,0,0,0';";
             self::applyDbUpgradeToAllDB($sql);
         }
     

@@ -2124,11 +2124,10 @@ class Abyss implements AbyssGame {
             // Also discard this ally from my hand!
             this.incAllyCount(player_id, -1);
 
-            // If it's me, also delete the actual ally
-            if (player_id == this.getPlayerId()) {
-                this.getCurrentPlayerTable().removeAllies([ally]);
-            }
-            
+            // If it's me, also delete the actual ally - removed as caused end of game issues with ui
+            //if (player_id == this.getPlayerId()) {
+                //this.getCurrentPlayerTable().removeAllies([ally]);
+            //}            
         }
         
         this.organisePanelMessages();

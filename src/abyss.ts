@@ -297,17 +297,17 @@ class Abyss implements AbyssGame {
         let me = gamedatas.players[(this as any).player_id];
         if (me) {
             if (! me.autopass) {
-                me.autopass = "0;0;0;0;0";
+                me.autopass = "0;0;0;0;0;0";
             }
             if (me.autopass) {
                 let pieces: any[] = me.autopass.split(";");
-                if (pieces.length > 5) {
-                    pieces = [0, 0, 0, 0, 0];
+                if (pieces.length > 6) {
+                    pieces = [0, 0, 0, 0, 0, 0];
                 }
                 if (pieces.length >= 5) {
                     let firstValue = +pieces[0];
                     let allSame = true;
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < 6; i++) {
                         let max = +pieces[i];
                         if (max != firstValue) {
                             allSame = false;
@@ -322,7 +322,7 @@ class Abyss implements AbyssGame {
                 }
             }
             
-            for (let faction = 0; faction < 5; faction++) {
+            for (let faction = 0; faction < 6; faction++) {
                 for (let i = 0; i <= 5; i++) {   
                     dojo.connect($('autopass-'+faction+'-'+i), 'onclick', () => {
                     // Check only up to this
@@ -341,7 +341,7 @@ class Abyss implements AbyssGame {
                     for (let j = 0; j <= 5; j++) {
                         $('autopass-all-'+j).checked = i == j;
                     }
-                    for (let faction = 0; faction < 5; faction++) {
+                    for (let faction = 0; faction < 6; faction++) {
                         for (let j = 0; j <= 5; j++) {
                             $('autopass-'+faction+'-'+j).checked = j <= i;
                         }

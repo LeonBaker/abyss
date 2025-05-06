@@ -159,6 +159,7 @@ class Abyss implements AbyssGame {
         $('scoring-row-lord').innerHTML += `<td></td>`;
         $('scoring-row-affiliated').innerHTML += `<td></td>`;
         $('scoring-row-monster').innerHTML += `<td></td>`;
+
         if (gamedatas.krakenExpansion) {
             $('scoring-row-nebulis').innerHTML += `<td></td>`;
             $('scoring-row-kraken').innerHTML += `<td></td>`;  
@@ -250,6 +251,7 @@ class Abyss implements AbyssGame {
         this.setTooltip( 'scoring-lords-icon', _( 'Lords' ));
         this.setTooltip( 'scoring-affiliated-icon', _( 'Affiliated Allies' ));
         this.setTooltip( 'scoring-monster-tokens-icon', _( 'Monster tokens' ));
+
         if (gamedatas.krakenExpansion) {
             this.setTooltip('scoring-nebulis-icon', _( 'Nebulis' ));
             this.setTooltip('scoring-kraken-icon', _( 'Kraken' ));
@@ -261,6 +263,7 @@ class Abyss implements AbyssGame {
         
         // Localisation of options box
         $('option-desc').innerHTML = _('Which Ally cards do you want to automatically pass on?');
+        $('faction-desc').innerHTML = _('Value of Ally cards in hand');
         $('option-all').innerHTML = _('All');
         $('option-jellyfish').innerHTML = _('Jellyfish');
         $('option-crab').innerHTML = _('Crab');
@@ -276,6 +279,11 @@ class Abyss implements AbyssGame {
             const krakenInputs = document.getElementById('kraken-inputs');
             if (krakenInputs) {
                 krakenInputs.classList.remove('hide-row');
+            }
+
+            const krakenFaction = document.getElementById('kraken-faction');
+            if (krakenFaction) {
+                krakenFaction.classList.remove('hide-row');
             }
         }
         // Only show auto-pass options for actual players
@@ -360,6 +368,7 @@ class Abyss implements AbyssGame {
         }
         
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
 
         this.zoomManager = new ZoomManager({
             element: document.getElementById('table'),
@@ -424,7 +433,9 @@ class Abyss implements AbyssGame {
                 dojo.query('#locations-holder-overflow .location:not(.location-back)').addClass('card-current-move');
             }
         }
-        
+
+        this.updateFactionPanelFromHand();
+
         switch( stateName ) {
             case 'revealMonsterToken':
             case 'chooseRevealReward':
@@ -1317,6 +1328,45 @@ class Abyss implements AbyssGame {
         }
     }
 
+    private updateFactionPanelFromHand() {
+        setTimeout(() => {
+            const factionTotals: { [key: number]: number } = {};
+    
+            // Initialize totals for each faction
+            [0, 1, 2, 3, 4].forEach(faction => (factionTotals[faction] = 0));
+    
+            // Include Kraken (ID 10) only if krakenExpansion is enabled
+            if (this.gamedatas.krakenExpansion) {
+                factionTotals[10] = 0;
+            }
+    
+            // Get all allies in the player's hand using AllyManager
+            const allies = this.allyManager.getAlliesInHand();
+    
+            // Sum the values for each faction
+            allies.forEach(ally => {
+                if (ally.faction in factionTotals) {
+                    factionTotals[ally.faction] += ally.value;
+                }
+            });
+    
+            // Update the UI
+            Object.keys(factionTotals).forEach(faction => {
+                const totalElement = document.getElementById(`faction-total-${faction}`);
+                if (totalElement) {
+                    totalElement.textContent = factionTotals[faction].toString();
+                }
+            });
+    
+            // Hide Kraken row if krakenExpansion is disabled
+            if (!this.gamedatas.krakenExpansion) {
+                const krakenRow = document.getElementById('kraken-faction');
+                if (krakenRow) {
+                    krakenRow.style.display = 'none';
+                }
+            }
+        }, 1000); // Delay of 1 second
+    }
     ///////////////////////////////////////////////////
     //// Player's action
 
@@ -2131,7 +2181,8 @@ class Abyss implements AbyssGame {
         }
         
         this.organisePanelMessages();
-    }
+        this.updateFactionPanelFromHand();
+}
 
     notif_explore( notif: Notif<NotifExploreArgs> ) {
         var ally = notif.args.ally;
@@ -2157,8 +2208,9 @@ class Abyss implements AbyssGame {
         } else {
             this.notif_exploreTake_real( notif );
         }
-        
+
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     }
 
     notif_exploreTake_real( notif: Notif<NotifExploreTakeArgs> ) {
@@ -2211,20 +2263,21 @@ class Abyss implements AbyssGame {
         this.allyDiscardCounter.setValue(notif.args.allyDiscardSize);
         
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     }
 
-    notif_takeAllyFromDiscard( notif: Notif<NotifPurchaseArgs> ) {
-        let player_id = notif.args.player_id;
+    notif_takeAllyFromDiscard(notif: Notif<NotifPurchaseArgs>) {
+        const player_id = notif.args.player_id;
 
         if (player_id == this.getPlayerId()) {
             this.getPlayerTable(Number(player_id)).addHandAlly(notif.args.ally, $('game-extra'));
-
         }
         this.incAllyCount(player_id, 1);
 
         this.allyDiscardCounter.setValue(notif.args.discardSize);
-        
+
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     }
 
     notif_purchase( notif: Notif<NotifPurchaseArgs> ) {
@@ -2253,8 +2306,9 @@ class Abyss implements AbyssGame {
             };
             animation.play();
         }
-        
+
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     }
 
     notif_setThreat( notif: Notif<NotifThreatArgs> ) {
@@ -2291,7 +2345,7 @@ class Abyss implements AbyssGame {
         } else {
             this.incAllyCount(player_id, num);
         }
-        
+
         this.organisePanelMessages();
     }
 
@@ -2353,8 +2407,9 @@ class Abyss implements AbyssGame {
 
         this.allyDiscardCounter.setValue(notif.args.allyDiscardSize);
         
-        this.lordManager.updateLordKeys(player_id);
+        this.lordManager.updateLordKeys(player_id);        
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     }
 
     notif_discardLords( notif: Notif<any> ) {
@@ -2368,6 +2423,7 @@ class Abyss implements AbyssGame {
         
         this.lordManager.updateLordKeys(playerId);
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     }
 
     notif_refillLords(notif: Notif<NotifRefillLordsArgs>) {

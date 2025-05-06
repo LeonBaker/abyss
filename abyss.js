@@ -2892,6 +2892,17 @@ var AllyManager = /** @class */ (function (_super) {
             return 'Blue';
         }
     };
+    AllyManager.prototype.getAlliesInHand = function () {
+        var allies = [];
+        dojo.query("#player-hand .ally").forEach(function (node) {
+            var faction = parseInt(node.dataset.faction || "-1", 10);
+            var value = parseInt(node.dataset.value || "0", 10);
+            if (faction !== -1) {
+                allies.push({ faction: faction, value: value });
+            }
+        });
+        return allies;
+    };
     return AllyManager;
 }(CardManager));
 var LordManager = /** @class */ (function (_super) {
@@ -3831,6 +3842,7 @@ var Abyss = /** @class */ (function () {
         }
         // Localisation of options box
         $('option-desc').innerHTML = _('Which Ally cards do you want to automatically pass on?');
+        $('faction-desc').innerHTML = _('Value of Ally cards in hand');
         $('option-all').innerHTML = _('All');
         $('option-jellyfish').innerHTML = _('Jellyfish');
         $('option-crab').innerHTML = _('Crab');
@@ -3845,6 +3857,10 @@ var Abyss = /** @class */ (function () {
             var krakenInputs = document.getElementById('kraken-inputs');
             if (krakenInputs) {
                 krakenInputs.classList.remove('hide-row');
+            }
+            var krakenFaction = document.getElementById('kraken-faction');
+            if (krakenFaction) {
+                krakenFaction.classList.remove('hide-row');
             }
         }
         // Only show auto-pass options for actual players
@@ -3930,6 +3946,7 @@ var Abyss = /** @class */ (function () {
             document.getElementById('threat-track').style.display = 'none';
         }
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
         this.zoomManager = new ZoomManager({
             element: document.getElementById('table'),
             localStorageZoomKey: LOCAL_STORAGE_ZOOM_KEY,
@@ -3992,6 +4009,7 @@ var Abyss = /** @class */ (function () {
                 dojo.query('#locations-holder-overflow .location:not(.location-back)').addClass('card-current-move');
             }
         }
+        this.updateFactionPanelFromHand();
         switch (stateName) {
             case 'revealMonsterToken':
             case 'chooseRevealReward':
@@ -4806,6 +4824,40 @@ var Abyss = /** @class */ (function () {
             }
         }
     };
+    Abyss.prototype.updateFactionPanelFromHand = function () {
+        var _this = this;
+        setTimeout(function () {
+            var factionTotals = {};
+            // Initialize totals for each faction
+            [0, 1, 2, 3, 4].forEach(function (faction) { return (factionTotals[faction] = 0); });
+            // Include Kraken (ID 10) only if krakenExpansion is enabled
+            if (_this.gamedatas.krakenExpansion) {
+                factionTotals[10] = 0;
+            }
+            // Get all allies in the player's hand using AllyManager
+            var allies = _this.allyManager.getAlliesInHand();
+            // Sum the values for each faction
+            allies.forEach(function (ally) {
+                if (ally.faction in factionTotals) {
+                    factionTotals[ally.faction] += ally.value;
+                }
+            });
+            // Update the UI
+            Object.keys(factionTotals).forEach(function (faction) {
+                var totalElement = document.getElementById("faction-total-".concat(faction));
+                if (totalElement) {
+                    totalElement.textContent = factionTotals[faction].toString();
+                }
+            });
+            // Hide Kraken row if krakenExpansion is disabled
+            if (!_this.gamedatas.krakenExpansion) {
+                var krakenRow = document.getElementById('kraken-faction');
+                if (krakenRow) {
+                    krakenRow.style.display = 'none';
+                }
+            }
+        }, 1000); // Delay of 1 second
+    };
     ///////////////////////////////////////////////////
     //// Player's action
     /*
@@ -5501,6 +5553,7 @@ var Abyss = /** @class */ (function () {
             //}            
         }
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_explore = function (notif) {
         var ally = notif.args.ally;
@@ -5525,6 +5578,7 @@ var Abyss = /** @class */ (function () {
             this.notif_exploreTake_real(notif);
         }
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_exploreTake_real = function (notif) {
         var _this = this;
@@ -5581,6 +5635,7 @@ var Abyss = /** @class */ (function () {
         }
         this.allyDiscardCounter.setValue(notif.args.allyDiscardSize);
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_takeAllyFromDiscard = function (notif) {
         var player_id = notif.args.player_id;
@@ -5590,6 +5645,7 @@ var Abyss = /** @class */ (function () {
         this.incAllyCount(player_id, 1);
         this.allyDiscardCounter.setValue(notif.args.discardSize);
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_purchase = function (notif) {
         var _this = this;
@@ -5618,6 +5674,7 @@ var Abyss = /** @class */ (function () {
             animation.play();
         }
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_setThreat = function (notif) {
         // Update handsize and pearls of purchasing player
@@ -5704,6 +5761,7 @@ var Abyss = /** @class */ (function () {
         this.allyDiscardCounter.setValue(notif.args.allyDiscardSize);
         this.lordManager.updateLordKeys(player_id);
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_discardLords = function (notif) {
         var playerId = notif.args.playerId;
@@ -5714,6 +5772,7 @@ var Abyss = /** @class */ (function () {
         }
         this.lordManager.updateLordKeys(playerId);
         this.organisePanelMessages();
+        this.updateFactionPanelFromHand();
     };
     Abyss.prototype.notif_refillLords = function (notif) {
         var lords = notif.args.lords;

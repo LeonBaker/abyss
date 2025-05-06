@@ -83,4 +83,19 @@ class AllyManager extends CardManager<AbyssAlly> {
       return 'Blue';
     }
   }
+
+  getAlliesInHand(): { faction: number; value: number }[] {
+    const allies: { faction: number; value: number }[] = [];
+
+    dojo.query("#player-hand .ally").forEach((node: HTMLElement) => {
+        const faction = parseInt(node.dataset.faction || "-1", 10);
+        const value = parseInt(node.dataset.value || "0", 10);
+
+        if (faction !== -1) {
+            allies.push({ faction, value });
+        }
+    });
+
+    return allies;
+  }
 }

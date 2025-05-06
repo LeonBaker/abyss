@@ -96,83 +96,115 @@
   </div>
 </div>
 
-<div id="gameplay-options">
-  <p><b id="option-desc"></b></p>
-  <br>
-  <table>
-    <tr>
-      <td>&nbsp;</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-    </tr>
-    <tr id="all-inputs">
-      <td id="option-all">All</td>
-      <td><input id="autopass-all-0" type="radio"></td>
-      <td><input id="autopass-all-1" type="radio"></td>
-      <td><input id="autopass-all-2" type="radio"></td>
-      <td><input id="autopass-all-3" type="radio"></td>
-      <td><input id="autopass-all-4" type="radio"></td>
-      <td><input id="autopass-all-5" type="radio"></td>
-    </tr>
-    <tr id="jellyfish-inputs">
-      <td style="color: purple" id="option-jellyfish"></td>
-      <td><input id="autopass-0-0" type="radio"></td>
-      <td><input id="autopass-0-1" type="radio"></td>
-      <td><input id="autopass-0-2" type="radio"></td>
-      <td><input id="autopass-0-3" type="radio"></td>
-      <td><input id="autopass-0-4" type="radio"></td>
-      <td><input id="autopass-0-5" type="radio"></td>
-    </tr>
-    <tr id="crab-inputs">
-      <td style="color: red" id="option-crab"></td>
-      <td><input id="autopass-1-0" type="radio"></td>
-      <td><input id="autopass-1-1" type="radio"></td>
-      <td><input id="autopass-1-2" type="radio"></td>
-      <td><input id="autopass-1-3" type="radio"></td>
-      <td><input id="autopass-1-4" type="radio"></td>
-      <td><input id="autopass-1-5" type="radio"></td>
-    </tr>
-    <tr id="seahorse-inputs">
-      <td style="color: #999900" id="option-seahorse"></td>
-      <td><input id="autopass-2-0" type="radio"></td>
-      <td><input id="autopass-2-1" type="radio"></td>
-      <td><input id="autopass-2-2" type="radio"></td>
-      <td><input id="autopass-2-3" type="radio"></td>
-      <td><input id="autopass-2-4" type="radio"></td>
-      <td><input id="autopass-2-5" type="radio"></td>
-    </tr>
-    <tr id="shellfish-inputs">
-      <td style="color: green" id="option-shellfish"></td>
-      <td><input id="autopass-3-0" type="radio"></td>
-      <td><input id="autopass-3-1" type="radio"></td>
-      <td><input id="autopass-3-2" type="radio"></td>
-      <td><input id="autopass-3-3" type="radio"></td>
-      <td><input id="autopass-3-4" type="radio"></td>
-      <td><input id="autopass-3-5" type="radio"></td>
-    </tr>
-    <tr id="squid-inputs">
-      <td style="color: blue" id="option-squid"></td>
-      <td><input id="autopass-4-0" type="radio"></td>
-      <td><input id="autopass-4-1" type="radio"></td>
-      <td><input id="autopass-4-2" type="radio"></td>
-      <td><input id="autopass-4-3" type="radio"></td>
-      <td><input id="autopass-4-4" type="radio"></td>
-      <td><input id="autopass-4-5" type="radio"></td>
-    </tr>  
-    <tr id ="kraken-inputs" class="hide-row">
-      <td style="color: black" id="option-kraken"></td>
-      <td><input id="autopass-5-0" type="radio"></td>
-      <td><input id="autopass-5-1" type="radio"></td>
-      <td><input id="autopass-5-2" type="radio"></td>
-      <td><input id="autopass-5-3" type="radio"></td>
-      <td><input id="autopass-5-4" type="radio"></td>
-      <td><input id="autopass-5-5" type="radio"></td>
-    </tr>
-  </table>
+<div id="gameplay-container">
+  <div id="gameplay-options">
+    <p><b id="option-desc"></b></p>
+    <br>
+    <table>
+      <tr>
+        <td>&nbsp;</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr id="all-inputs">
+        <td id="option-all">All</td>
+        <td><input id="autopass-all-0" type="radio"></td>
+        <td><input id="autopass-all-1" type="radio"></td>
+        <td><input id="autopass-all-2" type="radio"></td>
+        <td><input id="autopass-all-3" type="radio"></td>
+        <td><input id="autopass-all-4" type="radio"></td>
+        <td><input id="autopass-all-5" type="radio"></td>
+      </tr>
+      <tr id="jellyfish-inputs">
+        <td style="color: purple" id="option-jellyfish"></td>
+        <td><input id="autopass-0-0" type="radio"></td>
+        <td><input id="autopass-0-1" type="radio"></td>
+        <td><input id="autopass-0-2" type="radio"></td>
+        <td><input id="autopass-0-3" type="radio"></td>
+        <td><input id="autopass-0-4" type="radio"></td>
+        <td><input id="autopass-0-5" type="radio"></td>
+      </tr>
+      <tr id="crab-inputs">
+        <td style="color: red" id="option-crab"></td>
+        <td><input id="autopass-1-0" type="radio"></td>
+        <td><input id="autopass-1-1" type="radio"></td>
+        <td><input id="autopass-1-2" type="radio"></td>
+        <td><input id="autopass-1-3" type="radio"></td>
+        <td><input id="autopass-1-4" type="radio"></td>
+        <td><input id="autopass-1-5" type="radio"></td>
+      </tr>
+      <tr id="seahorse-inputs">
+        <td style="color: #999900" id="option-seahorse"></td>
+        <td><input id="autopass-2-0" type="radio"></td>
+        <td><input id="autopass-2-1" type="radio"></td>
+        <td><input id="autopass-2-2" type="radio"></td>
+        <td><input id="autopass-2-3" type="radio"></td>
+        <td><input id="autopass-2-4" type="radio"></td>
+        <td><input id="autopass-2-5" type="radio"></td>
+      </tr>
+      <tr id="shellfish-inputs">
+        <td style="color: green" id="option-shellfish"></td>
+        <td><input id="autopass-3-0" type="radio"></td>
+        <td><input id="autopass-3-1" type="radio"></td>
+        <td><input id="autopass-3-2" type="radio"></td>
+        <td><input id="autopass-3-3" type="radio"></td>
+        <td><input id="autopass-3-4" type="radio"></td>
+        <td><input id="autopass-3-5" type="radio"></td>
+      </tr>
+      <tr id="squid-inputs">
+        <td style="color: blue" id="option-squid"></td>
+        <td><input id="autopass-4-0" type="radio"></td>
+        <td><input id="autopass-4-1" type="radio"></td>
+        <td><input id="autopass-4-2" type="radio"></td>
+        <td><input id="autopass-4-3" type="radio"></td>
+        <td><input id="autopass-4-4" type="radio"></td>
+        <td><input id="autopass-4-5" type="radio"></td>
+      </tr>  
+      <tr id ="kraken-inputs" class="hide-row">
+        <td style="color: black" id="option-kraken"></td>
+        <td><input id="autopass-5-0" type="radio"></td>
+        <td><input id="autopass-5-1" type="radio"></td>
+        <td><input id="autopass-5-2" type="radio"></td>
+        <td><input id="autopass-5-3" type="radio"></td>
+        <td><input id="autopass-5-4" type="radio"></td>
+        <td><input id="autopass-5-5" type="radio"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="faction-panel">
+    <p><b id="faction-desc"></b></p>
+    <br>
+    <table>      
+        <td id="faction-name-0" style="color: purple">Jellyfish</td>
+        <td id="faction-total-0">0</td>
+      </tr>
+      <tr>
+        <td id="faction-name-1" style="color: red">Crab</td>
+        <td id="faction-total-1">0</td>
+      </tr>
+      <tr>
+        <td id="faction-name-2" style="color: #999900">Seahorse</td>
+        <td id="faction-total-2">0</td>
+      </tr>
+      <tr>
+        <td id="faction-name-3" style="color: green">Shellfish</td>
+        <td id="faction-total-3">0</td>
+      </tr>
+      <tr>
+        <td id="faction-name-4" style="color: blue">Squid</td>
+        <td id="faction-total-4">0</td>
+      </tr>
+      <tr id ="kraken-faction" class="hide-row" >
+        <td id="faction-name-10" style="color: black">Kraken</td>
+        <td id="faction-total-10">0</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
 {OVERALL_GAME_FOOTER}

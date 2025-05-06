@@ -1771,7 +1771,13 @@ html .lord .lord-desc {
   margin: 0;
 }
 
-#gameplay-options {
+#gameplay-container {
+  display: flex;
+  gap: 20px; /* Space between the panels */
+  align-items: flex-start; /* Align panels at the top */
+}
+
+#gameplay-options, #faction-panel {
   margin-top: 10px;
   margin-bottom:10px;
   margin-left: 20px;
@@ -1783,17 +1789,27 @@ html .lord .lord-desc {
   position: relative;
 }
 
-#gameplay-options > p {
+#faction-panel {
+  display: inline-block;
+}
+
+
+#gameplay-container td:first-child {
+  text-align: right;
+}
+
+#faction-panel table td:last-child {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+#gameplay-options > p, #faction-panel > p {
   margin: 0;
 }
 
-#gameplay-options td {
+#gameplay-options td, #faction-panel td {
   padding: 0 15px;
   text-align: center;
-}
-
-#gameplay-options td:first-child {
-  text-align: right;
 }
 
 #gameplay-options #all-inputs input[type='radio'] {
@@ -1824,7 +1840,7 @@ html .lord .lord-desc {
   accent-color: black;
 }
 
-#gameplay-options table tr.hide-row{
+#gameplay-container table tr.hide-row{
   display: none;
 }
 

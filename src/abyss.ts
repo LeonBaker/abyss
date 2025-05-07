@@ -271,7 +271,6 @@ class Abyss implements AbyssGame {
         $('option-shellfish').innerHTML = _('Shellfish');
         $('option-squid').innerHTML = _('Squid');
         $('option-kraken').innerHTML = _('Kraken');
-        $('text-total').innerHTML = _('Total');
         $('text-value').innerHTML = _('Value');
         $('text-cards').innerHTML = _('Cards');
         $('last-round').innerHTML = _('This is the last round of the game!');

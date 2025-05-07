@@ -3841,7 +3841,7 @@ var Abyss = /** @class */ (function () {
             this.setTooltip('scoring-scourge-icon', _('Scourge'));
         }
         // Localisation of options box
-        $('option-desc').innerHTML = _('Set Ally cards to automatically pass on?');
+        $('option-desc').innerHTML = _('Set Ally cards to automatically pass on');
         $('faction-desc').innerHTML = _('Ally cards in hand');
         $('option-all').innerHTML = _('All');
         $('option-jellyfish').innerHTML = _('Jellyfish');
@@ -3850,7 +3850,6 @@ var Abyss = /** @class */ (function () {
         $('option-shellfish').innerHTML = _('Shellfish');
         $('option-squid').innerHTML = _('Squid');
         $('option-kraken').innerHTML = _('Kraken');
-        $('text-total').innerHTML = _('Total');
         $('text-value').innerHTML = _('Value');
         $('text-cards').innerHTML = _('Cards');
         $('last-round').innerHTML = _('This is the last round of the game!');

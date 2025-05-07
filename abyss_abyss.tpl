@@ -98,7 +98,7 @@
 
 <div id="gameplay-container">
   <div id="gameplay-options">
-    <p><b id="option-desc"></b></p>
+    <p><b id="option-desc" class="text-center"></b></p>
     <br>
     <table>
       <tr>
@@ -177,30 +177,42 @@
   </div>
 
   <div id="faction-panel">
-    <p><b id="faction-desc"></b></p>
+    <p><b id="faction-desc" class="text-center"></b></p>
     <br>
-    <table>      
+    <table>
+      <tr>
+        <th>&nbsp;</th>
+        <th><p><span id="text-cards"></span></p></th>
+        <th><p><span id="text-value"></span></p></th>
+      </tr>
+      <tr>
         <td id="faction-name-0" style="color: purple">Jellyfish</td>
+        <td id="faction-count-0">0</td>
         <td id="faction-total-0">0</td>
       </tr>
       <tr>
         <td id="faction-name-1" style="color: red">Crab</td>
+        <td id="faction-count-1">0</td>
         <td id="faction-total-1">0</td>
       </tr>
       <tr>
         <td id="faction-name-2" style="color: #999900">Seahorse</td>
+        <td id="faction-count-2">0</td>
         <td id="faction-total-2">0</td>
       </tr>
       <tr>
         <td id="faction-name-3" style="color: green">Shellfish</td>
+        <td id="faction-count-3">0</td>
         <td id="faction-total-3">0</td>
       </tr>
       <tr>
         <td id="faction-name-4" style="color: blue">Squid</td>
+        <td id="faction-count-4">0</td>
         <td id="faction-total-4">0</td>
       </tr>
-      <tr id ="kraken-faction" class="hide-row" >
+      <tr id="kraken-faction" class="hide-row">
         <td id="faction-name-10" style="color: black">Kraken</td>
+        <td id="faction-count-10">0</td>
         <td id="faction-total-10">0</td>
       </tr>
     </table>

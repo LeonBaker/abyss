@@ -3841,8 +3841,8 @@ var Abyss = /** @class */ (function () {
             this.setTooltip('scoring-scourge-icon', _('Scourge'));
         }
         // Localisation of options box
-        $('option-desc').innerHTML = _('Which Ally cards do you want to automatically pass on?');
-        $('faction-desc').innerHTML = _('Value of Ally cards in hand');
+        $('option-desc').innerHTML = _('Set Ally cards to automatically pass on?');
+        $('faction-desc').innerHTML = _('Ally cards in hand');
         $('option-all').innerHTML = _('All');
         $('option-jellyfish').innerHTML = _('Jellyfish');
         $('option-crab').innerHTML = _('Crab');
@@ -3851,6 +3851,8 @@ var Abyss = /** @class */ (function () {
         $('option-squid').innerHTML = _('Squid');
         $('option-kraken').innerHTML = _('Kraken');
         $('text-total').innerHTML = _('Total');
+        $('text-value').innerHTML = _('Value');
+        $('text-cards').innerHTML = _('Cards');
         $('last-round').innerHTML = _('This is the last round of the game!');
         //Show kraken autopass
         if (gamedatas.krakenExpansion) {
@@ -4828,25 +4830,35 @@ var Abyss = /** @class */ (function () {
         var _this = this;
         setTimeout(function () {
             var factionTotals = {};
-            // Initialize totals for each faction
-            [0, 1, 2, 3, 4].forEach(function (faction) { return (factionTotals[faction] = 0); });
+            var factionCounts = {};
+            // Initialize totals and counts for each faction
+            [0, 1, 2, 3, 4].forEach(function (faction) {
+                factionTotals[faction] = 0;
+                factionCounts[faction] = 0;
+            });
             // Include Kraken (ID 10) only if krakenExpansion is enabled
             if (_this.gamedatas.krakenExpansion) {
                 factionTotals[10] = 0;
+                factionCounts[10] = 0;
             }
             // Get all allies in the player's hand using AllyManager
             var allies = _this.allyManager.getAlliesInHand();
-            // Sum the values for each faction
+            // Sum the values and count the cards for each faction
             allies.forEach(function (ally) {
                 if (ally.faction in factionTotals) {
                     factionTotals[ally.faction] += ally.value;
+                    factionCounts[ally.faction] += 1;
                 }
             });
             // Update the UI
             Object.keys(factionTotals).forEach(function (faction) {
                 var totalElement = document.getElementById("faction-total-".concat(faction));
+                var countElement = document.getElementById("faction-count-".concat(faction));
                 if (totalElement) {
                     totalElement.textContent = factionTotals[faction].toString();
+                }
+                if (countElement) {
+                    countElement.textContent = factionCounts[faction].toString();
                 }
             });
             // Hide Kraken row if krakenExpansion is disabled

@@ -262,8 +262,8 @@ class Abyss implements AbyssGame {
         }
         
         // Localisation of options box
-        $('option-desc').innerHTML = _('Which Ally cards do you want to automatically pass on?');
-        $('faction-desc').innerHTML = _('Value of Ally cards in hand');
+        $('option-desc').innerHTML = _('Set Ally cards to automatically pass on');
+        $('faction-desc').innerHTML = _('Ally cards in hand');
         $('option-all').innerHTML = _('All');
         $('option-jellyfish').innerHTML = _('Jellyfish');
         $('option-crab').innerHTML = _('Crab');
@@ -272,6 +272,8 @@ class Abyss implements AbyssGame {
         $('option-squid').innerHTML = _('Squid');
         $('option-kraken').innerHTML = _('Kraken');
         $('text-total').innerHTML = _('Total');
+        $('text-value').innerHTML = _('Value');
+        $('text-cards').innerHTML = _('Cards');
         $('last-round').innerHTML = _('This is the last round of the game!');
 
          //Show kraken autopass
@@ -1328,33 +1330,44 @@ class Abyss implements AbyssGame {
         }
     }
 
+    
     private updateFactionPanelFromHand() {
         setTimeout(() => {
             const factionTotals: { [key: number]: number } = {};
+            const factionCounts: { [key: number]: number } = {};
     
-            // Initialize totals for each faction
-            [0, 1, 2, 3, 4].forEach(faction => (factionTotals[faction] = 0));
+            // Initialize totals and counts for each faction
+            [0, 1, 2, 3, 4].forEach(faction => {
+                factionTotals[faction] = 0;
+                factionCounts[faction] = 0;
+            });
     
             // Include Kraken (ID 10) only if krakenExpansion is enabled
             if (this.gamedatas.krakenExpansion) {
                 factionTotals[10] = 0;
+                factionCounts[10] = 0;
             }
     
             // Get all allies in the player's hand using AllyManager
             const allies = this.allyManager.getAlliesInHand();
     
-            // Sum the values for each faction
+            // Sum the values and count the cards for each faction
             allies.forEach(ally => {
                 if (ally.faction in factionTotals) {
                     factionTotals[ally.faction] += ally.value;
+                    factionCounts[ally.faction] += 1;
                 }
             });
     
             // Update the UI
             Object.keys(factionTotals).forEach(faction => {
                 const totalElement = document.getElementById(`faction-total-${faction}`);
+                const countElement = document.getElementById(`faction-count-${faction}`);
                 if (totalElement) {
                     totalElement.textContent = factionTotals[faction].toString();
+                }
+                if (countElement) {
+                    countElement.textContent = factionCounts[faction].toString();
                 }
             });
     
@@ -1367,6 +1380,7 @@ class Abyss implements AbyssGame {
             }
         }, 1000); // Delay of 1 second
     }
+
     ///////////////////////////////////////////////////
     //// Player's action
 

@@ -1793,10 +1793,6 @@ html .lord .lord-desc {
   position: relative;
 }
 
-#faction-panel {
-  display: inline-block;
-}
-
 #gameplay-container .text-center {
   text-align: center;
   display: block;
@@ -1806,16 +1802,25 @@ html .lord .lord-desc {
   text-align: right;
 }
 
-#faction-panel table th:last-child, #faction-panel table td:last-child {
-  padding: 0 15px;
-}
-
 #gameplay-options > p, #faction-panel > p {
   margin: 0;
 }
 
-#gameplay-options td, #faction-panel td {
+#gameplay-options td {
   padding: 0 15px;
+  text-align: center;
+}
+
+#faction-panel p {
+ margin-top: 0;
+}
+
+#faction-panel table th:last-child {
+  padding: 0 15px;
+}
+
+#faction-panel td {
+  padding: 1px 15px;
   text-align: center;
 }
 
@@ -2366,6 +2371,7 @@ i.icon-defeated-leviathan {
   margin: 5px -5px -5px -5px;
   text-align: center;
   background-color: #990000;
+  color:#ffffff
 }
 
 html a.bgabutton.affiliate-button {

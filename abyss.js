@@ -3864,10 +3864,11 @@ var Abyss = /** @class */ (function () {
                 krakenFaction.classList.remove('hide-row');
             }
         }
-        // Only show auto-pass options for actual players
+        // Only show auto-pass and card options for actual players
         if (!this.isSpectator) {
             // $('gameplay-options').style.display = this.bRealtime ? 'none' : 'inline-block';
             $('gameplay-options').style.display = 'inline-block';
+            $('faction-panel').style.display = 'inline-block';
         }
         // Only show the game end warning if it's the end of the game!
         $('page-title').appendChild($('last-round'));

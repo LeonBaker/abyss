@@ -1778,14 +1778,9 @@ html .lord .lord-desc {
 }
 
 #gameplay-options, #faction-panel {
-  background-color: #ffffff; 
-  padding: 20px; 
-  box-sizing: border-box; 
-}
-
-#gameplay-options, #faction-panel {
   margin: 10px 0;
   background-color: #ffffff;
+  box-sizing: border-box; 
   color: black;
   display: none;
   padding: 20px;

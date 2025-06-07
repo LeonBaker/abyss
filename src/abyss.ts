@@ -2086,9 +2086,10 @@ class Abyss implements AbyssGame {
         var location = notif.args.location;
         var lords = notif.args.lords;
         var player_id = notif.args.player_id;
+        var add_lords = notif.args.add_lords;
 
         // Add the location to the player board
-        this.getPlayerTable(player_id).addLocation(location, lords, false);
+        this.getPlayerTable(player_id).addLocation(location, lords, false, add_lords);
         
         this.lordManager.updateLordKeys(player_id);
         
@@ -2102,8 +2103,7 @@ class Abyss implements AbyssGame {
         // Delete the location/lords
         this.getPlayerTable(player_id).removeLocation({ location_id } as AbyssLocation);
         
-        this.lordManager.updateLordKeys(player_id);
-        
+        this.lordManager.updateLordKeys(player_id);        
         this.organisePanelMessages();
     }
 

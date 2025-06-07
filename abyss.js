@@ -3123,6 +3123,16 @@ var LocationManager = /** @class */ (function (_super) {
     };
     LocationManager.prototype.addLords = function (locationId, lords) {
         this.lordsStocks[locationId].addCards(lords);
+        var locationDiv = document.getElementById("location-".concat(locationId));
+        if (locationDiv) {
+            // Remove any tooltip attribute
+            locationDiv.removeAttribute('data-tooltip');
+            // Remove any BGA tooltip
+            if (this.game.tooltips && this.game.tooltips[locationDiv.id]) {
+                this.game.tooltips[locationDiv.id].destroy();
+                delete this.game.tooltips[locationDiv.id];
+            }
+        }
     };
     LocationManager.prototype.addLoot = function (locationId, loot) {
         console.log('addLoot', loot);
@@ -3138,7 +3148,10 @@ var LocationManager = /** @class */ (function (_super) {
         this.lootStocks[locationId].removeCards(loots);
     };
     LocationManager.prototype.removeLordsOnLocation = function (location) {
-        this.lordsStocks[location.location_id].removeAll();
+        var lordsToRemove = this.lordsStocks[location.location_id];
+        if (lordsToRemove) {
+            lordsToRemove.removeAll();
+        }
     };
     return LocationManager;
 }(CardManager));
@@ -3387,7 +3400,7 @@ var PlayerTable = /** @class */ (function () {
             center: false,
         });
         this.locations.onCardClick = function (card) { return _this.game.onClickPlayerLocation(card); };
-        player.locations.forEach(function (location) { return _this.addLocation(location, player.lords.filter(function (lord) { return lord.location == location.location_id; }), true); });
+        player.locations.forEach(function (location) { return _this.addLocation(location, player.lords.filter(function (lord) { return lord.location == location.location_id; }), true, true); });
         this.game.lordManager.updateLordKeys(this.playerId, this);
     }
     PlayerTable.prototype.addHandAlly = function (ally, fromElement, originalSide, rotationDelta) {
@@ -3454,7 +3467,7 @@ var PlayerTable = /** @class */ (function () {
         }
         return affiliated;
     };
-    PlayerTable.prototype.addLocation = function (location, lords, init) {
+    PlayerTable.prototype.addLocation = function (location, lords, init, add_lords) {
         var _this = this;
         this.locations.addCard(location).then(function (animated) {
             // if loot location, scroll to it
@@ -3463,7 +3476,9 @@ var PlayerTable = /** @class */ (function () {
                 scrollIntoView(element);
             }
         });
-        this.game.locationManager.addLords(location.location_id, lords);
+        if (add_lords == null || add_lords) {
+            this.game.locationManager.addLords(location.location_id, lords);
+        }
     };
     PlayerTable.prototype.affiliatedAllyClick = function (ally) {
         if (this.game.gamedatas.gamestate.name === 'lord114multi') {
@@ -5479,8 +5494,9 @@ var Abyss = /** @class */ (function () {
         var location = notif.args.location;
         var lords = notif.args.lords;
         var player_id = notif.args.player_id;
+        var add_lords = notif.args.add_lords;
         // Add the location to the player board
-        this.getPlayerTable(player_id).addLocation(location, lords, false);
+        this.getPlayerTable(player_id).addLocation(location, lords, false, add_lords);
         this.lordManager.updateLordKeys(player_id);
         this.organisePanelMessages();
     };

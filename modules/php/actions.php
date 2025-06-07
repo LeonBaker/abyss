@@ -1451,6 +1451,7 @@ trait ActionTrait {
                     'deck_size' => Location::getDeckSize(),
             ) );
         } else if ($state["name"] == "locationEffectBlackSmokers") {
+
             // You must pick a Location from the deck
             if ($location["place"] != 0) {
                 throw new BgaUserException( $this->_("You must choose a Location from the deck.") );
@@ -1460,14 +1461,16 @@ trait ActionTrait {
             $this->DbQuery( "UPDATE lord SET location = $location_id WHERE location = 10" );
 
             // Discard the old Location
-            $this->DbQuery( "UPDATE location SET place = 10 WHERE location_id = 10" );
+            $this->DbQuery( "UPDATE location SET place = -2343492 WHERE location_id = 10" );
 
             $trapped_lords = Lord::injectText($this->getCollectionFromDb( "SELECT * FROM lord WHERE location = $location_id" ));
+            $trapped_lords = array_values($trapped_lords);
 
             $this->notifyAllPlayers( "loseLocation", '', array(
-                    'location_id' => 10,
-                    'player_id' => $player_id
-            ) );
+                'location_id' => 10,
+                'player_id' => $player_id
+            ) );            
+
         } else {
             // If location_drawn_1-4 are not -1, then you must pick one of those
             $available_locations = $this->argControlPostDraw()["location_ids"];
@@ -1533,6 +1536,7 @@ trait ActionTrait {
                 'player_name' => $this->getActivePlayerName(),
                 'location_name' => $this->locations[$location_id]["name"],
                 'i18n' => array('location_name'),
+                'add_lords' => $location_id != 10, //don't add if moving from Black Smokers
         ) );
 
         $this->updatePlayerScore( $player_id, false );

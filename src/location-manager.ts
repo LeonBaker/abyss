@@ -111,6 +111,17 @@ class LocationManager extends CardManager<AbyssLocation> {
 
   public addLords(locationId: number, lords: AbyssLord[]) {
     this.lordsStocks[locationId].addCards(lords);
+
+    const locationDiv = document.getElementById(`location-${locationId}`);
+    if (locationDiv) {
+    // Remove any tooltip attribute
+        locationDiv.removeAttribute('data-tooltip');
+        // Remove any BGA tooltip
+        if ((this.game as any).tooltips && (this.game as any).tooltips[locationDiv.id]) {
+            (this.game as any).tooltips[locationDiv.id].destroy();
+            delete (this.game as any).tooltips[locationDiv.id];
+        }
+      }
   }
 
   public addLoot(locationId: number, loot: AbyssLoot) {
@@ -129,6 +140,9 @@ class LocationManager extends CardManager<AbyssLocation> {
   }
   
   public removeLordsOnLocation(location: AbyssLocation) {
-    this.lordsStocks[location.location_id].removeAll();
+    const lordsToRemove = this.lordsStocks[location.location_id];
+    if (lordsToRemove) {
+        lordsToRemove.removeAll();
+    }
   }
 }

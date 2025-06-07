@@ -74,7 +74,7 @@ class PlayerTable {
             center: false,
         });
         this.locations.onCardClick = card => this.game.onClickPlayerLocation(card);
-        player.locations.forEach(location => this.addLocation(location, player.lords.filter(lord => lord.location == location.location_id), true));
+        player.locations.forEach(location => this.addLocation(location, player.lords.filter(lord => lord.location == location.location_id), true, true));
 
         this.game.lordManager.updateLordKeys(this.playerId, this);
     }
@@ -154,7 +154,7 @@ class PlayerTable {
         return affiliated;
     }
     
-    public addLocation(location: AbyssLocation, lords: AbyssLord[], init: boolean) {
+    public addLocation(location: AbyssLocation, lords: AbyssLord[], init: boolean, add_lords) {
 
         this.locations.addCard(location).then(animated => {
             // if loot location, scroll to it
@@ -163,7 +163,10 @@ class PlayerTable {
                 scrollIntoView(element);
             }
         });
-        this.game.locationManager.addLords(location.location_id, lords);
+
+        if(add_lords == null || add_lords){
+            this.game.locationManager.addLords(location.location_id, lords);
+        }
     }
     
     private affiliatedAllyClick(ally: AbyssAlly): void {

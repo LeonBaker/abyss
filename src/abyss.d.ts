@@ -263,6 +263,7 @@ interface NotifControlArgs {
     location: AbyssLocation;
     lords: AbyssLord[];
     player_id: number;
+    add_lords: boolean;
 }
 
 interface NotifLoseLocationArgs {

@@ -704,8 +704,11 @@ trait UtilTrait {
     }
 
     function canAffordLord(int $playerId, array $hand, int $pearls, int $nebulis, $lord) {
+        
         $krakenKey = $this->array_find_key($hand, fn($ally) => $ally["faction"] == 10);
-        if ($krakenKey != null) {
+
+        if ($krakenKey !== null) {
+
             for ($i=0; $i < 5; $i++) { 
                 $modifiedHand = $hand; // copy
                 $modifiedHand[$krakenKey]["faction"] = $i;
@@ -728,6 +731,7 @@ trait UtilTrait {
             }
             $diversity[$ally["faction"]] += $ally["value"];
         }
+        
         //throw new BgaUserException( self::_(join(", ", array_keys($diversity)) . " : " . join(", ", array_values($diversity))) );
         $potentialFound = true;
         

@@ -734,6 +734,14 @@ trait ActionTrait {
         if (!$hasDiplomat && !$r['includesRequired']) {
             throw new BgaUserException( $this->_("You must include an Ally of the Lord's faction.") );
         }
+
+        if (!$hasDiplomat && $lord['diversity'] == 1 && isset($lord['faction'])) {
+            foreach ($allies as $ally) {
+                if ($ally['faction'] != $lord['faction'] && $ally['faction'] != 10) {
+                    throw new BgaUserException($this->_("You must only use Allies of the Lord's required faction."));
+                }
+            }
+        }
         if (($r['diversity'] + $r['krakens']) < $lord['diversity'] || $r['diversity'] > $lord['diversity']) {
             throw new BgaUserException( sprintf($this->_("You must use exactly %d different faction(s)."), $lord['diversity']) );
         }
@@ -1705,13 +1713,17 @@ trait ActionTrait {
             'freeLord' => true,
         ]);
 
-        /* Note: The Liberator cannot trigger the power of Ambassadors
+        /* Note: The Liberator cannot trigger the power of Ambassadors - It is disabled on free to prevent a re-trigger on 3 keys */
+
         if (in_array($id, [33, 34, 35])) {
-            $this->setGameStateValue('selected_lord', $id);
-            $this->gamestate->nextState('selectNewLocation');
-        } else {*/
-            $this->gamestate->nextState('freeLord');
-        /*}*/
+           Lord::disable( $id );
+           /*  $this->setGameStateValue('selected_lord', $id);
+            $this->gamestate->nextState('selectNewLocation');*/
+        } 
+        /*else {$this->gamestate->nextState('freeLord');} */
+            
+        $this->gamestate->nextState('freeLord');
+        
     }
 
     function selectAllyRace(int $faction) {

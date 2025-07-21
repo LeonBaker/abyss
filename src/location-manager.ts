@@ -57,13 +57,25 @@ class LocationManager extends CardManager<AbyssLocation> {
         <div class=""></div>
         `;
 
+        // Add loot to locations
         if ([103, 104, 105, 106].includes(location.location_id)) {
           div.insertAdjacentHTML('beforeend', `<div id="loot-stock-${location.location_id}" class="loot-stock"></div>`);
 
-          this.lootStocks[location.location_id] = new CompressedLineStock<AbyssLoot>(lootManager, document.getElementById(`loot-stock-${location.location_id}`));
-          if (location.loots?.length) {
-            this.lootStocks[location.location_id].addCards(location.loots);
-          }
+          setTimeout(() => {
+            const lootDiv = document.getElementById(`loot-stock-${location.location_id}`);
+            if (!lootDiv) {
+              return;
+            }
+
+            this.lootStocks[location.location_id] = new CompressedLineStock<AbyssLoot>(lootManager, lootDiv);
+
+            if (location.loots?.length) {
+              // Add a small delay to ensure DOM is stable (cards injected, animations settled)
+              setTimeout(() => {
+                this.lootStocks[location.location_id].addCards(location.loots);
+              }, 200); // adjust if needed: 200ms gives animations time to complete
+            }
+          });
         }
       },
       setupBackDiv: (location, div) => {

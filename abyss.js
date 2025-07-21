@@ -3067,16 +3067,26 @@ var LocationManager = /** @class */ (function (_super) {
                 _this.game.setTooltip(div.id, _this.renderTooltip(location));
             },
             setupFrontDiv: function (location, div) {
-                var _a;
                 var desc = _this.makeDesc(location, true);
                 div.classList.add('location-side', "location-".concat(location.location_id));
                 div.innerHTML = "\n        <div class=\"location-clicker\"></div>\n        <span class=\"location-name\">".concat(_(location.name), "</span>\n        <span class=\"location-desc\">").concat(desc, "</span>\n        <div class=\"\"></div>\n        ");
+                // Add loot to locations
                 if ([103, 104, 105, 106].includes(location.location_id)) {
                     div.insertAdjacentHTML('beforeend', "<div id=\"loot-stock-".concat(location.location_id, "\" class=\"loot-stock\"></div>"));
-                    _this.lootStocks[location.location_id] = new CompressedLineStock(lootManager, document.getElementById("loot-stock-".concat(location.location_id)));
-                    if ((_a = location.loots) === null || _a === void 0 ? void 0 : _a.length) {
-                        _this.lootStocks[location.location_id].addCards(location.loots);
-                    }
+                    setTimeout(function () {
+                        var _a;
+                        var lootDiv = document.getElementById("loot-stock-".concat(location.location_id));
+                        if (!lootDiv) {
+                            return;
+                        }
+                        _this.lootStocks[location.location_id] = new CompressedLineStock(lootManager, lootDiv);
+                        if ((_a = location.loots) === null || _a === void 0 ? void 0 : _a.length) {
+                            // Add a small delay to ensure DOM is stable (cards injected, animations settled)
+                            setTimeout(function () {
+                                _this.lootStocks[location.location_id].addCards(location.loots);
+                            }, 200); // adjust if needed: 200ms gives animations time to complete
+                        }
+                    });
                 }
             },
             setupBackDiv: function (location, div) {

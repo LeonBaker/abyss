@@ -268,6 +268,12 @@ class Abyss extends Table {
         if ($krakenExpansion) {
             $result['sentinels'] = $this->getSentinels();
             $result['kraken'] = intval(self::getGameStateValue(KRAKEN));
+
+             foreach ($result['location_available'] as &$location) {
+                 if (in_array($location['location_id'], [103, 104, 105, 106])) {
+                     $location['loots'] = LootManager::getLootOnLocation($location['location_id']);              
+                 }
+            }
         }
         if ($leviathanExpansion) {
             $result['scourge'] = $this->getGlobalVariable(SCOURGE);

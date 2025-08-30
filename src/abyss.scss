@@ -253,14 +253,17 @@ html body #game-holder .slot-fake {
 
 .lord.selected {
   border: 3px solid red;
+  border-radius: 5px;
 }
 
 .free-lords .lord.unused {
   border: 3px solid #2d2;
+  border-radius: 5px;
 }
 
 .lord.selectable {
   border: 3px solid #2d2;
+  border-radius: 5px;
 }
 
 .player-panel {
@@ -567,6 +570,90 @@ html .lord .lord-desc {
 
 #gameplay-options td:first-child {
   text-align: right;
+}
+
+#gameplay-options #all-inputs input[type='radio'] {
+  accent-color: grey;
+}
+
+#gameplay-options #jellyfish-inputs input[type='radio'] {
+  accent-color: purple;
+}
+
+#gameplay-options #crab-inputs input[type='radio'] {
+  accent-color: red;
+}
+
+#gameplay-options #seahorse-inputs input[type='radio'] {
+  accent-color: #999900;
+}
+
+#gameplay-options #shellfish-inputs input[type='radio'] {
+  accent-color: green;
+}
+
+#gameplay-options #squid-inputs input[type='radio'] {
+  accent-color: blue;
+}
+
+#gameplay-options #kraken-inputs input[type='radio'] {
+  accent-color: black;
+}
+
+#gameplay-container {
+  display: flex;
+  gap: 20px; 
+  align-items: stretch; 
+}
+
+#gameplay-options, #faction-panel {
+  margin: 10px 0;
+  background-color: #ffffff;
+  box-sizing: border-box; 
+  color: black;
+  display: none;
+  padding: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+#gameplay-container .text-center {
+  text-align: center;
+  display: block;
+}
+
+#gameplay-container td:first-child {
+  text-align: right;
+}
+
+#gameplay-options > p, #faction-panel > p {
+  margin: 0;
+}
+
+#gameplay-options td {
+  padding: 0 15px;
+  text-align: center;
+}
+
+#faction-panel p {
+ margin-top: 0;
+}
+
+#faction-panel table th:last-child {
+  padding: 0 15px;
+}
+
+#faction-panel td {
+  padding: 1px 15px;
+  text-align: center;
+}
+
+#gameplay-container table tr.hide-row{
+  display: none;
+}
+
+#gameplay-options input[type='radio']:hover {
+  cursor: pointer;
 }
 
 /* ICONS */
@@ -1389,4 +1476,21 @@ html a.bgabutton.affiliate-button:hover {
         background-position-x: #{($index - 1) * 100% / 5};
     }
   }
+}
+
+/* Override BGA Cards transition speeds for better performance */
+.card-stock.all-visible-deck {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-stock.all-visible-deck > .card {
+  transition: left 0.2s ease-in-out, top 0.2s ease-in-out;
+}
+
+.card-stock.all-visible-deck .bga-cards_deck-counter {
+  transition: left 0.2s ease-in-out, top 0.2s ease-in-out;
+}
+
+.card .card-sides {
+  transition: transform 0.2s;
 }

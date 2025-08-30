@@ -250,7 +250,7 @@ class PlayerTable {
             lordIcon.style.color = this.getLordFactionColor(lord.lord_id);
             lordElement.appendChild(lordIcon);
             
-                         const lordText = dojo.create("span");
+             const lordText = dojo.create("span");
              lordText.innerHTML = " " + _(lord.desc);
              lordElement.appendChild(lordText);
             
@@ -260,7 +260,7 @@ class PlayerTable {
     
     private isSpecialLord(lordId: number): boolean {
         // List of lords that have special effects when active
-        const specialLordIds = [1, 5, 6, 8, 11, 12, 14, 17, 18, 20, 21, 24, 25, 26, 101, 102, 103, 105, 106, 107, 108, 109, 111, 113, 115, 201, 203, 205, 207, 209];
+        const specialLordIds = [1, 5, 6, 8, 11, 12, 14, 17, 18, 20, 21, 24, 25, 26, 101, 102, 103, 105, 109, 111, 113, 115, 201, 203, 205, 207, 209];
         return specialLordIds.includes(lordId);
     }
     

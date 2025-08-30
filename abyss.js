@@ -3565,7 +3565,7 @@ var PlayerTable = /** @class */ (function () {
     };
     PlayerTable.prototype.isSpecialLord = function (lordId) {
         // List of lords that have special effects when active
-        var specialLordIds = [1, 5, 6, 8, 11, 12, 14, 17, 18, 20, 21, 24, 25, 26, 101, 102, 103, 105, 106, 107, 108, 109, 111, 113, 115, 201, 203, 205, 207, 209];
+        var specialLordIds = [1, 5, 6, 8, 11, 12, 14, 17, 18, 20, 21, 24, 25, 26, 101, 102, 103, 105, 109, 111, 113, 115, 201, 203, 205, 207, 209];
         return specialLordIds.includes(lordId);
     };
     PlayerTable.prototype.getLordFactionColor = function (lordId) {

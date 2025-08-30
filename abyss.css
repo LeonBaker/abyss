@@ -85,7 +85,7 @@ body > .card {
   right: 0;
   bottom: 0;
   transform-style: preserve-3d;
-  transition: transform 0.2s;
+  transition: transform 0.5s;
 }
 
 .card .card-sides .card-side {
@@ -263,14 +263,14 @@ body > .card {
   --tile-count: 1;
   width: calc(var(--width) + (var(--tile-count) - 1) * var(--horizontal-shift));
   height: calc(var(--height) + (var(--tile-count) - 1) * var(--vertical-shift));
-  transition: width 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out, background-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
   opacity: var(--tile-count);
 }
 
 .card-stock.all-visible-deck > .card {
   position: absolute;
   margin: 0;
-  transition: left 0.2s ease-in-out, top 0.2s ease-in-out;
+  transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
   top: calc(var(--vertical-shift) * var(--order));
   left: calc(var(--horizontal-shift) * var(--order));
 }
@@ -294,7 +294,7 @@ body > .card {
 }
 
 .card-stock.all-visible-deck .bga-cards_deck-counter {
-  transition: left 0.2s ease-in-out, top 0.2s ease-in-out;
+  transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
 }
 
 .card-stock.all-visible-deck[data-empty=true] > .card {
@@ -1774,16 +1774,64 @@ html .lord .lord-desc {
   margin: 0;
 }
 
+#gameplay-options {
+  margin-top: 10px;
+  margin-left: 20px;
+  background-color: #191970;
+  color: white;
+  display: none;
+  padding: 10px;
+  z-index: 1;
+  position: relative;
+}
+
+#gameplay-options td {
+  padding: 0 5px;
+  text-align: center;
+}
+
+#gameplay-options td:first-child {
+  text-align: right;
+}
+
+#gameplay-options #all-inputs input[type=radio] {
+  accent-color: grey;
+}
+
+#gameplay-options #jellyfish-inputs input[type=radio] {
+  accent-color: purple;
+}
+
+#gameplay-options #crab-inputs input[type=radio] {
+  accent-color: red;
+}
+
+#gameplay-options #seahorse-inputs input[type=radio] {
+  accent-color: #999900;
+}
+
+#gameplay-options #shellfish-inputs input[type=radio] {
+  accent-color: green;
+}
+
+#gameplay-options #squid-inputs input[type=radio] {
+  accent-color: blue;
+}
+
+#gameplay-options #kraken-inputs input[type=radio] {
+  accent-color: black;
+}
+
 #gameplay-container {
   display: flex;
-  gap: 20px; 
-  align-items: stretch; 
+  gap: 20px;
+  align-items: stretch;
 }
 
 #gameplay-options, #faction-panel {
   margin: 10px 0;
   background-color: #ffffff;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   color: black;
   display: none;
   padding: 20px;
@@ -1810,7 +1858,7 @@ html .lord .lord-desc {
 }
 
 #faction-panel p {
- margin-top: 0;
+  margin-top: 0;
 }
 
 #faction-panel table th:last-child {
@@ -1822,39 +1870,11 @@ html .lord .lord-desc {
   text-align: center;
 }
 
-#gameplay-options #all-inputs input[type='radio'] {
-  accent-color: grey;
-}
-
-#gameplay-options #jellyfish-inputs input[type='radio'] {
-  accent-color: purple;
-}
-
-#gameplay-options #crab-inputs input[type='radio'] {
-  accent-color: red;
-}
-
-#gameplay-options #seahorse-inputs input[type='radio'] {
-  accent-color: #999900;
-}
-
-#gameplay-options #shellfish-inputs input[type='radio'] {
-  accent-color: green;
-}
-
-#gameplay-options #squid-inputs input[type='radio'] {
-  accent-color: blue;
-}
-
-#gameplay-options #kraken-inputs input[type='radio'] {
-  accent-color: black;
-}
-
-#gameplay-container table tr.hide-row{
+#gameplay-container table tr.hide-row {
   display: none;
 }
 
-#gameplay-options input[type='radio']:hover {
+#gameplay-options input[type=radio]:hover {
   cursor: pointer;
 }
 
@@ -2369,7 +2389,7 @@ i.icon-defeated-leviathan {
   margin: 5px -5px -5px -5px;
   text-align: center;
   background-color: #990000;
-  color:#ffffff
+  color: #ffffff;
 }
 
 html a.bgabutton.affiliate-button {
@@ -2814,4 +2834,25 @@ html a.bgabutton.affiliate-button:hover {
 }
 .log-die[data-value="6"] {
   background-position-x: 100%;
+}
+
+/* Override BGA Cards transition speeds for better performance */
+.card-stock.all-visible-deck {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-stock.all-visible-deck > .card {
+  transition: left 0.2s ease-in-out, top 0.2s ease-in-out;
+}
+
+.card-stock.all-visible-deck .bga-cards_deck-counter {
+  transition: left 0.2s ease-in-out, top 0.2s ease-in-out;
+}
+
+.card .card-sides {
+  transition: transform 0.2s;
+}
+
+.card .card-sides .card-side {
+  transition: transform 0.2s;
 }

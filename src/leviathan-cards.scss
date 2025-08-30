@@ -48,7 +48,7 @@
       }
       @for $i from 0 through 9 {
         &[data-place="#{$i}"] {
-          top: #{($i - 1) * 85px / 2 + 38px};
+          top: #{calc(($i - 1) * 85px / 2 + 38px)};
         }
       }
     }
@@ -63,11 +63,11 @@
       &[data-slot-id="#{$i}"] {
         @if $i % 2 == 1 {
           left: 0px;
-          top: #{($i - 1) * 88px / 2};
+          top: #{calc(($i - 1) * 88px / 2)};
         }
         @if $i % 2 == 0 {
           left: 233px;
-          top: #{($i - 1) * 88px / 2};
+          top: #{calc(($i - 1) * 88px / 2)};
         }
       }
     }

@@ -1,3 +1,5 @@
+
+
 async function scrollIntoView(element: HTMLElement) {
     const rect = element.getBoundingClientRect();
     const isVisible = (
@@ -77,6 +79,9 @@ class PlayerTable {
         player.locations.forEach(location => this.addLocation(location, player.lords.filter(lord => lord.location == location.location_id), true, true));
 
         this.game.lordManager.updateLordKeys(this.playerId, this);
+        
+        // Add active lords panel
+        this.setupActiveLordsPanel(player.lords);
     }
     
     public addHandAlly(ally: AbyssAlly, fromElement?: HTMLElement, originalSide?, rotationDelta?: number) {
@@ -196,5 +201,117 @@ class PlayerTable {
 
     public getHand() {
         return this.hand;
+    }
+
+    public setupActiveLordsPanel(lords: AbyssLord[]) {
+        // Create the active lords panel HTML
+        let activeLordsContainer = document.getElementById(`player-panel-${this.playerId}-active-lords`);
+        if (!activeLordsContainer) {
+            // If the container doesn't exist, create it dynamically
+            const playerPanel = document.getElementById(`player-panel-${this.playerId}`);
+            const sentinelsSection = playerPanel.querySelector('.sentinels');
+            
+                    // Create the active lords section
+        const activeLordsSection = dojo.create("div");
+        const title = _("Active Powers");
+        activeLordsSection.innerHTML = "<h4>" + title + "</h4>" +
+            "<div id=\"player-panel-" + this.playerId + "-active-lords\" class=\"active-lords\"></div>";
+        
+        // Insert after the sentinels section
+        sentinelsSection.parentNode.insertBefore(activeLordsSection, sentinelsSection.nextSibling);
+        activeLordsContainer = document.getElementById(`player-panel-${this.playerId}-active-lords`);
+        }
+        
+        // Get active lords (lords that are free, have special effects, and are not disabled)
+        const activeLords = lords.filter(lord => 
+            lord.location == null && 
+            this.isSpecialLord(lord.lord_id) && 
+            !this.freeLords.getCardElement(lord).classList.contains('disabled')
+        );
+        
+        // Hide the entire section if there are no active lords
+        const activeLordsSection = activeLordsContainer.parentNode as HTMLElement;
+        if (activeLords.length === 0) {
+            activeLordsSection.style.display = 'none';
+            return;
+        }
+        
+        // Show the section and clear existing content
+        activeLordsSection.style.display = 'block';
+        activeLordsContainer.innerHTML = '';
+        
+        // Create a simple display for the current player's active lords
+        activeLords.forEach(lord => {
+            const lordElement = dojo.create("div");
+            lordElement.className = "active-lord-item";
+            
+            const lordIcon = dojo.create("i");
+            lordIcon.className = "icon icon-lord";
+            lordIcon.style.color = this.getLordFactionColor(lord.lord_id);
+            lordElement.appendChild(lordIcon);
+            
+                         const lordText = dojo.create("span");
+             lordText.innerHTML = " " + _(lord.desc);
+             lordElement.appendChild(lordText);
+            
+            activeLordsContainer.appendChild(lordElement);
+        });
+    }
+    
+    private isSpecialLord(lordId: number): boolean {
+        // List of lords that have special effects when active
+        const specialLordIds = [1, 5, 6, 8, 11, 12, 14, 17, 18, 20, 21, 24, 25, 26, 101, 102, 103, 105, 106, 107, 108, 109, 111, 113, 115, 201, 203, 205, 207, 209];
+        return specialLordIds.includes(lordId);
+    }
+    
+    private getLordFactionColor(lordId: number): string {
+        // Map lord IDs to faction colors
+        const lordFactions: { [id: number]: string } = {
+            1: "purple", 5: "red", 6: "#999900", 8: "green", 11: "blue",
+            12: "purple", 14: "red", 17: "#999900", 18: "green", 20: "blue",
+            21: "purple", 24: "red", 25: "#999900", 26: "green",
+            101: "darkgray", 102: "darkgray", 103: "darkgray", 105: "darkgray",
+            106: "darkgray", 107: "darkgray", 108: "darkgray", 109: "darkgray",
+            111: "darkgray", 113: "darkgray", 115: "darkgray",
+            201: "purple", 203: "red", 205: "green", 207: "blue", 209: "#999900"
+        };
+        return lordFactions[lordId] || "black";
+    }
+    
+    private getLordEffectText(lordId: number): string {
+        // Map lord IDs to their effect descriptions
+        const lordEffects: { [id: number]: string } = {
+            1: _("Costs are increased by 2 for all other players"),
+            5: _("All other players cannot hold more than 6 allies"),
+            6: _("All other players earn the previous monster track reward"),
+            8: _("Gain 1 pearl for each different race sent to the council"),
+            11: _("Gain 1 pearl at the start of your turn"),
+            12: _("Can discard 1 ally for 2 pearls each turn"),
+            14: _("Protected by all military lords"),
+            17: _("May discard 1 stack from the council each turn"),
+            18: _("Adds to 2 stacks when taking from the council"),
+            20: _("May affiliate the ally of choice"),
+            21: _("May replace a lord each turn"),
+            24: _("May recruit with any race (respecting the number required)"),
+            25: _("Pays 2 less to recruit"),
+            26: _("May replace a lord in the court each turn"),
+            101: _("May replace 1 nebuli with a pearl each turn"),
+            102: _("May use 2 nebulis when purchasing"),
+            103: _("May use nebulis when purchasing even if they still have pearls"),
+            105: _("Does not receive nebuli for kraken allies at the end of the game"),
+            106: _("Can place their sentinel token on a free area"),
+            107: _("Can place their sentinel token on a free area"),
+            108: _("Can place their sentinel token on a free area"),
+            109: _("Gains 1 pearl each time a lord is recruited"),
+            111: _("Can purchase 2 allies"),
+            113: _("Takes 1 pearl each time a player gains 2 or more"),
+            115: _("Can add a lord to a free space in the court each turn"),
+            201: _("If you slay a Leviathan, you can fight a second one"),
+            203: _("Earn 2 Pearls for each Health point you remove from a Leviathan"),
+            205: _("When you fight a Leviathan, use an Ally of the Race of your choice"),
+            207: _("Win 1 extra Monster token for each Health point you remove from a Leviathan"),
+            209: _("You can choose to ignore Monsters revealed during your Exploration, the cards are discarded")
+        };
+        return lordEffects[lordId] || _("Unknown effect");
     }
 }

@@ -2094,6 +2094,14 @@ class Abyss implements AbyssGame {
         this.lordManager.updateLordKeys(player_id);
         
         this.organisePanelMessages();
+        
+        // Add active lords panel - update since lords were moved to the location
+        const playerTable = this.getPlayerTable(player_id);
+        if (playerTable) {
+            // Get the current lords from the visual elements instead of stale gamedatas
+            const currentLords = playerTable.getFreeLords();
+            playerTable.setupActiveLordsPanel(currentLords);
+        }
     }
 
     notif_loseLocation( notif: Notif<NotifLoseLocationArgs> ) {
@@ -2105,6 +2113,14 @@ class Abyss implements AbyssGame {
         
         this.lordManager.updateLordKeys(player_id);        
         this.organisePanelMessages();
+        
+        // Add active lords panel
+        const playerTable = this.getPlayerTable(player_id);
+        if (playerTable) {
+            // Get the current lords from the visual elements instead of stale gamedatas
+            const currentLords = playerTable.getFreeLords();
+            playerTable.setupActiveLordsPanel(currentLords);
+        }
     }
 
     notif_newLocations( notif: Notif<NotifNewLocationsArgs> ) {
@@ -2124,6 +2140,16 @@ class Abyss implements AbyssGame {
         this.lordManager.getCardElement({ lord_id } as AbyssLord).classList.add('disabled');
         for( var player_id in this.gamedatas.players ) {
             this.lordManager.updateLordKeys(Number(player_id));
+        }
+        
+        // Add active lords panel - update all player tables since any lord could be affected
+        for( var player_id in this.gamedatas.players ) {
+            const playerTable = this.getPlayerTable(Number(player_id));
+            if (playerTable) {
+                // Get the current lords from the visual elements instead of stale gamedatas
+                const currentLords = playerTable.getFreeLords();
+                playerTable.setupActiveLordsPanel(currentLords);
+            }
         }
     }
 
@@ -2424,6 +2450,14 @@ class Abyss implements AbyssGame {
         this.lordManager.updateLordKeys(player_id);        
         this.organisePanelMessages();
         this.updateFactionPanelFromHand();
+        
+        // Add active lords panel
+        const playerTable = this.getPlayerTable(player_id);
+        if (playerTable) {
+            // Get the current lords from the visual elements instead of stale gamedatas
+            const currentLords = playerTable.getFreeLords();
+            playerTable.setupActiveLordsPanel(currentLords);
+        }
     }
 
     notif_discardLords( notif: Notif<any> ) {
@@ -2438,6 +2472,14 @@ class Abyss implements AbyssGame {
         this.lordManager.updateLordKeys(playerId);
         this.organisePanelMessages();
         this.updateFactionPanelFromHand();
+        
+        // Add active lords panel
+        const playerTable = this.getPlayerTable(playerId);
+        if (playerTable) {
+            // Get the current lords from the visual elements instead of stale gamedatas
+            const currentLords = playerTable.getFreeLords();
+            playerTable.setupActiveLordsPanel(currentLords);
+        }
     }
 
     notif_refillLords(notif: Notif<NotifRefillLordsArgs>) {

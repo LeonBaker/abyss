@@ -1,0 +1,63 @@
+/* Active Lords Panel Styles */
+.active-lords {
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.active-lords-player {
+  margin-bottom: 15px;
+}
+
+.active-lords-player h5 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.active-lord-item {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.active-lord-item .icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.active-lord-item span {
+  font-size: 12px;
+  line-height: 1.3;
+  color: white;
+}
+
+/* Faction-specific colors for lord icons */
+.active-lord-item .icon[style*="purple"] {
+  color: purple !important;
+}
+
+.active-lord-item .icon[style*="red"] {
+  color: red !important;
+}
+
+.active-lord-item .icon[style*="#999900"] {
+  color: #999900 !important;
+}
+
+.active-lord-item .icon[style*="green"] {
+  color: green !important;
+}
+
+.active-lord-item .icon[style*="blue"] {
+  color: blue !important;
+}
+
+.active-lord-item .icon[style*="darkgray"] {
+  color: darkgray !important;
+}
+
+.active-lord-item .icon[style*="black"] {
+  color: black !important;
+}

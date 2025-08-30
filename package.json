@@ -5,7 +5,8 @@
   "main": "abyss.js",
   "scripts": {
     "build:ts": "tsc",
-    "build:scss": "sass --no-source-map src/abyss.scss abyss.css"
+    "build:scss": "sass --no-source-map src/abyss.scss abyss.css",
+    "watch:ts": "tsc --watch"
   },
   "author": "",
   "license": "ISC",

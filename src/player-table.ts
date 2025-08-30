@@ -278,40 +278,5 @@ class PlayerTable {
         return lordFactions[lordId] || "black";
     }
     
-    private getLordEffectText(lordId: number): string {
-        // Map lord IDs to their effect descriptions
-        const lordEffects: { [id: number]: string } = {
-            1: _("Costs are increased by 2 for all other players"),
-            5: _("All other players cannot hold more than 6 allies"),
-            6: _("All other players earn the previous monster track reward"),
-            8: _("Gain 1 pearl for each different race sent to the council"),
-            11: _("Gain 1 pearl at the start of your turn"),
-            12: _("Can discard 1 ally for 2 pearls each turn"),
-            14: _("Protected by all military lords"),
-            17: _("May discard 1 stack from the council each turn"),
-            18: _("Adds to 2 stacks when taking from the council"),
-            20: _("May affiliate the ally of choice"),
-            21: _("May replace a lord each turn"),
-            24: _("May recruit with any race (respecting the number required)"),
-            25: _("Pays 2 less to recruit"),
-            26: _("May replace a lord in the court each turn"),
-            101: _("May replace 1 nebuli with a pearl each turn"),
-            102: _("May use 2 nebulis when purchasing"),
-            103: _("May use nebulis when purchasing even if they still have pearls"),
-            105: _("Does not receive nebuli for kraken allies at the end of the game"),
-            106: _("Can place their sentinel token on a free area"),
-            107: _("Can place their sentinel token on a free area"),
-            108: _("Can place their sentinel token on a free area"),
-            109: _("Gains 1 pearl each time a lord is recruited"),
-            111: _("Can purchase 2 allies"),
-            113: _("Takes 1 pearl each time a player gains 2 or more"),
-            115: _("Can add a lord to a free space in the court each turn"),
-            201: _("If you slay a Leviathan, you can fight a second one"),
-            203: _("Earn 2 Pearls for each Health point you remove from a Leviathan"),
-            205: _("When you fight a Leviathan, use an Ally of the Race of your choice"),
-            207: _("Win 1 extra Monster token for each Health point you remove from a Leviathan"),
-            209: _("You can choose to ignore Monsters revealed during your Exploration, the cards are discarded")
-        };
-        return lordEffects[lordId] || _("Unknown effect");
-    }
+
 }

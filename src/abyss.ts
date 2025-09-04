@@ -1264,50 +1264,58 @@ class Abyss implements AbyssGame {
         switch (location) {
             case 'player':
                 const sentinelsElement = document.getElementById(`player-panel-${playerId}-sentinels`);
-                sentinelsElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(
-                        new BgaSlideAnimation({
-                            element: sentinel,
-                        }),
-                        sentinelsElement
-                    );
+                if (sentinelsElement) {
+                    sentinelsElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(
+                            new BgaSlideAnimation({
+                                element: sentinel,
+                            }),
+                            sentinelsElement
+                        );
+                    }
                 }
                 break;
             case 'lord':
                 const lordElement = this.lordManager.getCardElement({ lord_id: locationArg } as AbyssLord);
-                lordElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(
-                        new BgaSlideAnimation({
-                            element: sentinel,
-                        }),
-                        lordElement
-                    );
+                if (lordElement) {
+                    lordElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(
+                            new BgaSlideAnimation({
+                                element: sentinel,
+                            }),
+                            lordElement
+                        );
+                    }
                 }
                 break;
             case 'council':
                 const councilElement = document.getElementById(`council-track-${locationArg}`);
-                councilElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(
-                        new BgaSlideAnimation({
-                            element: sentinel,
-                        }),
-                        councilElement
-                    );
+                if (councilElement) {
+                    councilElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(
+                            new BgaSlideAnimation({
+                                element: sentinel,
+                            }),
+                            councilElement
+                        );
+                    }
                 }
                 break;
             case 'location':
                 const locationElement = this.locationManager.getCardElement({ location_id: locationArg } as AbyssLocation);
-                locationElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(
-                        new BgaSlideAnimation({
-                            element: sentinel,
-                        }),
-                        locationElement
-                    );
+                if (locationElement) {
+                    locationElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(
+                            new BgaSlideAnimation({
+                                element: sentinel,
+                            }),
+                            locationElement
+                        );
+                    }
                 }
                 break;
 

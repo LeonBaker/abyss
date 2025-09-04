@@ -3593,24 +3593,32 @@ var LeviathanBoard = /** @class */ (function () {
         var _this = this;
         this.game = game;
         this.diceManager = new AbyssDiceManager(game);
-        this.diceStock = new LineDiceStock(this.diceManager, document.getElementById("leviathan-dice-stock"), { gap: '2px' });
-        document.getElementById("leviathan-dice-stock").dataset.place = "".concat(gamedatas.lastDieRoll[0]);
-        var diceValues = gamedatas.lastDieRoll[1];
-        var dice = diceValues.map(function (face, id) { return ({ id: id, face: face, type: 0 }); });
-        this.diceStock.addDice(dice);
-        this.stock = new SlotStock(this.game.leviathanManager, document.getElementById('leviathan-board'), {
-            slotsIds: SLOTS_IDS, // 99 = temp space
-            mapCardToSlot: function (card) { return card.place; },
-        });
-        this.stock.addCards(gamedatas.leviathans);
-        this.stock.onCardClick = function (card) { return _this.game.onLeviathanClick(card); };
+        var diceStockElement = document.getElementById("leviathan-dice-stock");
+        var leviathanBoardElement = document.getElementById('leviathan-board');
+        if (diceStockElement) {
+            this.diceStock = new LineDiceStock(this.diceManager, diceStockElement, { gap: '2px' });
+            diceStockElement.dataset.place = "".concat(gamedatas.lastDieRoll[0]);
+            var diceValues = gamedatas.lastDieRoll[1];
+            var dice = diceValues.map(function (face, id) { return ({ id: id, face: face, type: 0 }); });
+            this.diceStock.addDice(dice);
+        }
+        if (leviathanBoardElement) {
+            this.stock = new SlotStock(this.game.leviathanManager, leviathanBoardElement, {
+                slotsIds: SLOTS_IDS, // 99 = temp space
+                mapCardToSlot: function (card) { return card.place; },
+            });
+            this.stock.addCards(gamedatas.leviathans);
+            this.stock.onCardClick = function (card) { return _this.game.onLeviathanClick(card); };
+        }
         SLOTS_IDS.forEach(function (slot) {
             var slotDiv = document.querySelector("#leviathan-board [data-slot-id=\"".concat(slot, "\"]"));
-            slotDiv.addEventListener('click', function () {
-                if (slotDiv.classList.contains('selectable')) {
-                    _this.game.onLeviathanTrackSlotClick(slot);
-                }
-            });
+            if (slotDiv) {
+                slotDiv.addEventListener('click', function () {
+                    if (slotDiv.classList.contains('selectable')) {
+                        _this.game.onLeviathanTrackSlotClick(slot);
+                    }
+                });
+            }
         });
         if (gamedatas.fightedLeviathan) {
             this.game.leviathanManager.getCardElement(gamedatas.fightedLeviathan).classList.add('fighted-leviathan');
@@ -3623,7 +3631,9 @@ var LeviathanBoard = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, scrollIntoView(document.getElementById('leviathan-track'))];
+                    case 0:
+                        if (!this.stock) return [3 /*break*/, 4];
+                        return [4 /*yield*/, scrollIntoView(document.getElementById('leviathan-track'))];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.stock.removeCard(leviathan)];
@@ -3632,7 +3642,8 @@ var LeviathanBoard = /** @class */ (function () {
                         return [4 /*yield*/, sleep(500)];
                     case 3:
                         _a.sent();
-                        return [2 /*return*/];
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -3641,37 +3652,47 @@ var LeviathanBoard = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, scrollIntoView(document.getElementById('leviathan-track'))];
+                    case 0:
+                        if (!this.stock) return [3 /*break*/, 3];
+                        return [4 /*yield*/, scrollIntoView(document.getElementById('leviathan-track'))];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.stock.addCard(leviathan, { fromElement: document.getElementById('leviathan-track') })];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/];
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
     LeviathanBoard.prototype.showDice = function (spot, diceValues) {
         return __awaiter(this, void 0, void 0, function () {
-            var dice;
+            var diceStockElement, dice;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        document.getElementById("leviathan-dice-stock").dataset.place = "".concat(spot);
+                        diceStockElement = document.getElementById("leviathan-dice-stock");
+                        if (diceStockElement) {
+                            diceStockElement.dataset.place = "".concat(spot);
+                        }
                         dice = diceValues.map(function (face, id) { return ({ id: id, face: face, type: 0 }); });
+                        if (!this.diceStock) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.diceStock.addDice(dice)];
                     case 1:
                         _a.sent();
-                        //await sleep(500);
+                        _a.label = 2;
+                    case 2:
+                        if (!this.diceStock) return [3 /*break*/, 4];
                         this.diceStock.rollDice(dice, {
                             effect: 'rollIn',
                             duration: [800, 1200]
                         });
                         return [4 /*yield*/, sleep(1200)];
-                    case 2:
+                    case 3:
                         _a.sent();
-                        return [2 /*return*/];
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -3685,14 +3706,18 @@ var LeviathanBoard = /** @class */ (function () {
         });
     };
     LeviathanBoard.prototype.setSelectableLeviathans = function (selectableLeviathans) {
-        this.stock.setSelectionMode(selectableLeviathans ? 'single' : 'none', selectableLeviathans);
+        if (this.stock) {
+            this.stock.setSelectionMode(selectableLeviathans ? 'single' : 'none', selectableLeviathans);
+        }
     };
     LeviathanBoard.prototype.setAllSelectableLeviathans = function () {
-        this.stock.setSelectionMode('single');
+        if (this.stock) {
+            this.stock.setSelectionMode('single');
+        }
     };
     LeviathanBoard.prototype.setCurrentAttackPower = function (args) {
         return __awaiter(this, void 0, void 0, function () {
-            var div, animateDice, dice, grayedDiceIndex;
+            var div, animateDice, dice, frontElement, diceElement, dicePowerElement, totalElement, grayedDiceIndex, diceContainer, diceElements, pearlsElement, totalElement;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3702,12 +3727,18 @@ var LeviathanBoard = /** @class */ (function () {
                         if (!div) {
                             div = document.createElement('div');
                             div.id = 'current-attack-power';
-                            this.game.leviathanManager.getCardElement(args.fightedLeviathan).querySelector('.front').appendChild(div);
-                            div.innerHTML = "\n            <div>".concat(_('Attack:'), "</div>\n            <div><span style=\"color: transparent;\">+</span> ").concat(args.allyPower, " (<i class=\"icon icon-ally\"></i>)</div>\n            <div>+ <span id=\"current-attack-power-dice-power\">").concat(animateDice ? '?' : args.dicePower, "</span> (<div id=\"current-attack-power-dice\"></div>)</div>\n            <div id=\"current-attack-power-pearls\"></div>\n            <div id=\"current-attack-power-total\">= ").concat(animateDice ? '?' : args.attackPower, "</div>");
-                            this.currentAttackPowerDiceStock = new LineDiceStock(this.diceManager, document.getElementById("current-attack-power-dice"), { gap: '2px' });
-                            this.currentAttackPowerDiceStock.addDice(dice);
+                            frontElement = this.game.leviathanManager.getCardElement(args.fightedLeviathan).querySelector('.front');
+                            if (frontElement) {
+                                frontElement.appendChild(div);
+                                div.innerHTML = "\n                <div>".concat(_('Attack:'), "</div>\n                <div><span style=\"color: transparent;\">+</span> ").concat(args.allyPower, " (<i class=\"icon icon-ally\"></i>)</div>\n                <div>+ <span id=\"current-attack-power-dice-power\">").concat(animateDice ? '?' : args.dicePower, "</span> (<div id=\"current-attack-power-dice\"></div>)</div>\n                <div id=\"current-attack-power-pearls\"></div>\n                <div id=\"current-attack-power-total\">= ").concat(animateDice ? '?' : args.attackPower, "</div>");
+                                diceElement = document.getElementById("current-attack-power-dice");
+                                if (diceElement) {
+                                    this.currentAttackPowerDiceStock = new LineDiceStock(this.diceManager, diceElement, { gap: '2px' });
+                                    this.currentAttackPowerDiceStock.addDice(dice);
+                                }
+                            }
                         }
-                        if (!animateDice) return [3 /*break*/, 2];
+                        if (!(animateDice && this.currentAttackPowerDiceStock)) return [3 /*break*/, 2];
                         this.currentAttackPowerDiceStock.rollDice(dice, {
                             effect: 'rollIn',
                             duration: [800, 1200]
@@ -3715,17 +3746,31 @@ var LeviathanBoard = /** @class */ (function () {
                         return [4 /*yield*/, sleep(1200)];
                     case 1:
                         _a.sent();
-                        document.getElementById('current-attack-power-dice-power').innerText = "".concat(args.dicePower);
-                        document.getElementById('current-attack-power-total').innerHTML = "= ".concat(args.attackPower);
+                        dicePowerElement = document.getElementById('current-attack-power-dice-power');
+                        totalElement = document.getElementById('current-attack-power-total');
+                        if (dicePowerElement)
+                            dicePowerElement.innerText = "".concat(args.dicePower);
+                        if (totalElement)
+                            totalElement.innerHTML = "= ".concat(args.attackPower);
                         _a.label = 2;
                     case 2:
                         if (dice.length > 1) {
                             grayedDiceIndex = args.dice[1] > args.dice[0] ? 0 : 1;
-                            Array.from(document.getElementById("current-attack-power-dice").querySelectorAll('.bga-dice_die'))[grayedDiceIndex].classList.add('grayed');
+                            diceContainer = document.getElementById("current-attack-power-dice");
+                            if (diceContainer) {
+                                diceElements = Array.from(diceContainer.querySelectorAll('.bga-dice_die'));
+                                if (diceElements[grayedDiceIndex]) {
+                                    diceElements[grayedDiceIndex].classList.add('grayed');
+                                }
+                            }
                         }
                         if (args.attackPower > (args.allyPower + args.dicePower)) {
-                            document.getElementById('current-attack-power-pearls').innerHTML = "+ ".concat(args.attackPower - (args.allyPower + args.dicePower), " (<i class=\"icon icon-pearl\"></i>)</div>");
-                            document.getElementById('current-attack-power-total').innerHTML = "= ".concat(args.attackPower);
+                            pearlsElement = document.getElementById('current-attack-power-pearls');
+                            totalElement = document.getElementById('current-attack-power-total');
+                            if (pearlsElement)
+                                pearlsElement.innerHTML = "+ ".concat(args.attackPower - (args.allyPower + args.dicePower), " (<i class=\"icon icon-pearl\"></i>)</div>");
+                            if (totalElement)
+                                totalElement.innerHTML = "= ".concat(args.attackPower);
                         }
                         return [2 /*return*/];
                 }
@@ -4865,38 +4910,46 @@ var Abyss = /** @class */ (function () {
         switch (location) {
             case 'player':
                 var sentinelsElement = document.getElementById("player-panel-".concat(playerId, "-sentinels"));
-                sentinelsElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(new BgaSlideAnimation({
-                        element: sentinel,
-                    }), sentinelsElement);
+                if (sentinelsElement) {
+                    sentinelsElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(new BgaSlideAnimation({
+                            element: sentinel,
+                        }), sentinelsElement);
+                    }
                 }
                 break;
             case 'lord':
                 var lordElement = this.lordManager.getCardElement({ lord_id: locationArg });
-                lordElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(new BgaSlideAnimation({
-                        element: sentinel,
-                    }), lordElement);
+                if (lordElement) {
+                    lordElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(new BgaSlideAnimation({
+                            element: sentinel,
+                        }), lordElement);
+                    }
                 }
                 break;
             case 'council':
                 var councilElement = document.getElementById("council-track-".concat(locationArg));
-                councilElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(new BgaSlideAnimation({
-                        element: sentinel,
-                    }), councilElement);
+                if (councilElement) {
+                    councilElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(new BgaSlideAnimation({
+                            element: sentinel,
+                        }), councilElement);
+                    }
                 }
                 break;
             case 'location':
                 var locationElement = this.locationManager.getCardElement({ location_id: locationArg });
-                locationElement.appendChild(sentinel);
-                if (parentElement) {
-                    this.animationManager.attachWithAnimation(new BgaSlideAnimation({
-                        element: sentinel,
-                    }), locationElement);
+                if (locationElement) {
+                    locationElement.appendChild(sentinel);
+                    if (parentElement) {
+                        this.animationManager.attachWithAnimation(new BgaSlideAnimation({
+                            element: sentinel,
+                        }), locationElement);
+                    }
                 }
                 break;
         }

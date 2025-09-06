@@ -1608,7 +1608,29 @@ class Abyss implements AbyssGame {
 
     onVisibleAllyClick(ally: AbyssAlly) {
         if((this as any).checkAction('purchase', true)) {
-            this.onPurchase(0); // TODO BGA ?
+            // Smart purchase: use the best available payment method
+            const purchaseArgs = this.gamedatas.gamestate.args as EnteringPurchaseArgs;
+            
+            // If can't pay with pearls, use the first available nebulis option
+            if (!purchaseArgs.canPayWithPearls && purchaseArgs.withNebulis) {
+                // Find the first available nebulis option (server determines which amounts are valid)
+                const nebulisOptions = Object.keys(purchaseArgs.withNebulis).map(Number).sort((a, b) => a - b);
+                for (const nebulisAmount of nebulisOptions) {
+                    if (purchaseArgs.withNebulis[nebulisAmount]) {
+                        this.onPurchase(nebulisAmount);
+                        return;
+                    }
+                }
+            }
+            
+            // Default to pearls (0 nebulis) if pearls are available
+            if (purchaseArgs.canPayWithPearls) {
+                this.onPurchase(0);
+                return;
+            }
+            
+            // If we get here, no payment method is available (shouldn't happen)
+            console.warn('No valid payment method available for purchase');
             return;
         }
 

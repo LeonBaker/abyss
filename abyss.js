@@ -5200,7 +5200,27 @@ var Abyss = /** @class */ (function () {
     };
     Abyss.prototype.onVisibleAllyClick = function (ally) {
         if (this.checkAction('purchase', true)) {
-            this.onPurchase(0); // TODO BGA ?
+            // Smart purchase: use the best available payment method
+            var purchaseArgs = this.gamedatas.gamestate.args;
+            // If can't pay with pearls, use the first available nebulis option
+            if (!purchaseArgs.canPayWithPearls && purchaseArgs.withNebulis) {
+                // Find the first available nebulis option (server determines which amounts are valid)
+                var nebulisOptions = Object.keys(purchaseArgs.withNebulis).map(Number).sort(function (a, b) { return a - b; });
+                for (var _i = 0, nebulisOptions_1 = nebulisOptions; _i < nebulisOptions_1.length; _i++) {
+                    var nebulisAmount = nebulisOptions_1[_i];
+                    if (purchaseArgs.withNebulis[nebulisAmount]) {
+                        this.onPurchase(nebulisAmount);
+                        return;
+                    }
+                }
+            }
+            // Default to pearls (0 nebulis) if pearls are available
+            if (purchaseArgs.canPayWithPearls) {
+                this.onPurchase(0);
+                return;
+            }
+            // If we get here, no payment method is available (shouldn't happen)
+            console.warn('No valid payment method available for purchase');
             return;
         }
         this.exploreTake(ally.place);

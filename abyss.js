@@ -6219,6 +6219,7 @@ var Abyss = /** @class */ (function () {
         var panel = document.getElementById('council-panel');
         var message = document.getElementById('council-message');
         var factions = document.getElementById('council-factions');
+        var controls = document.getElementById('council-controls');
         // Check if there are any council cards by looking at the deck sizes
         var hasCards = this.gamedatas.ally_council_slots.some(function (count) { return count > 0; });
         if (hasCards) {
@@ -6231,10 +6232,13 @@ var Abyss = /** @class */ (function () {
             factions.style.display = 'none';
         }
         panel.style.display = 'block';
+        controls.style.display = 'none';
     };
     Abyss.prototype.hideCouncilPanel = function () {
         var panel = document.getElementById('council-panel');
+        var controls = document.getElementById('council-controls');
         panel.style.display = 'none';
+        controls.style.display = 'inline-block';
     };
     Abyss.prototype.renderCouncilCards = function () {
         var _this = this;
@@ -6266,8 +6270,22 @@ var Abyss = /** @class */ (function () {
                 header.textContent = "".concat(factionNames[faction], " (").concat(count, ")");
                 var cardsContainer_1 = document.createElement('div');
                 cardsContainer_1.className = 'faction-cards';
+                // Sort cards by value (low to high), with Kraken cards at the end
+                var sortedCards = cards.slice().sort(function (a, b) {
+                    var aValue = a && a.value !== undefined ? a.value : 999;
+                    var bValue = b && b.value !== undefined ? b.value : 999;
+                    var aIsKraken = a && a.faction === 10;
+                    var bIsKraken = b && b.faction === 10;
+                    // If one is Kraken and the other isn't, Kraken goes last
+                    if (aIsKraken && !bIsKraken)
+                        return 1;
+                    if (!aIsKraken && bIsKraken)
+                        return -1;
+                    // Otherwise sort by value
+                    return aValue - bValue;
+                });
                 // Show actual card details if available, otherwise show placeholders
-                cards.forEach(function (card, i) {
+                sortedCards.forEach(function (card, i) {
                     var cardDiv = document.createElement('div');
                     cardDiv.className = 'council-card';
                     // Add faction class for coloring

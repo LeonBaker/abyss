@@ -2756,6 +2756,7 @@ class Abyss implements AbyssGame {
         const panel = document.getElementById('council-panel');
         const message = document.getElementById('council-message');
         const factions = document.getElementById('council-factions');
+        const controls = document.getElementById('council-controls');
         
         // Check if there are any council cards by looking at the deck sizes
         const hasCards = this.gamedatas.ally_council_slots.some(count => count > 0);
@@ -2770,11 +2771,14 @@ class Abyss implements AbyssGame {
         }
         
         panel.style.display = 'block';
+        controls.style.display = 'none';
     }
 
     hideCouncilPanel() {
         const panel = document.getElementById('council-panel');
+        const controls = document.getElementById('council-controls');
         panel.style.display = 'none';
+        controls.style.display = 'inline-block';
     }
 
     renderCouncilCards() {
@@ -2800,21 +2804,36 @@ class Abyss implements AbyssGame {
         for (let faction = 0; faction <= 4; faction++) {
             const cards = this.gamedatas.ally_council_cards[faction] || [];
             const count = cards.length;
-            
+
             if (count > 0) {
                 const factionDiv = document.createElement('div');
                 factionDiv.className = `council-faction faction-${faction}`;
-                
+
                 const header = document.createElement('div');
                 header.className = 'faction-header';
                 header.style.color = factionColors[faction];
                 header.textContent = `${factionNames[faction]} (${count})`;
-                
+
                 const cardsContainer = document.createElement('div');
                 cardsContainer.className = 'faction-cards';
-                
+
+                   // Sort cards by value (low to high), with Kraken cards at the end
+                   const sortedCards = cards.slice().sort((a, b) => {
+                       const aValue = a && a.value !== undefined ? a.value : 999;
+                       const bValue = b && b.value !== undefined ? b.value : 999;
+                       const aIsKraken = a && a.faction === 10;
+                       const bIsKraken = b && b.faction === 10;
+                       
+                       // If one is Kraken and the other isn't, Kraken goes last
+                       if (aIsKraken && !bIsKraken) return 1;
+                       if (!aIsKraken && bIsKraken) return -1;
+                       
+                       // Otherwise sort by value
+                       return aValue - bValue;
+                   });
+
                 // Show actual card details if available, otherwise show placeholders
-                cards.forEach((card, i) => {
+                sortedCards.forEach((card, i) => {
                     const cardDiv = document.createElement('div');
                     cardDiv.className = 'council-card';
                     
@@ -2838,7 +2857,7 @@ class Abyss implements AbyssGame {
                     
                     cardsContainer.appendChild(cardDiv);
                 });
-                
+
                 factionDiv.appendChild(header);
                 factionDiv.appendChild(cardsContainer);
                 factionsContainer.appendChild(factionDiv);

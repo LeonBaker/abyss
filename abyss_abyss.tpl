@@ -96,26 +96,6 @@
     </div>
   </div>
   
-  <!-- Council View Button and Panel -->
-  <div id="council-controls" class="text-center" style="margin: 10px 0;">
-    <button id="view-council-btn" class="bgabutton bgabutton_blue">View Council</button>
-  </div>
-  
-  <div id="council-panel" class="whiteblock" style="display: none;">
-    <div class="council-panel-header">
-      <h3>Council Cards</h3>
-      <button id="hide-council-btn" class="bgabutton bgabutton_red">Hide</button>
-    </div>
-    <div id="council-content">
-      <div id="council-message" class="text-center" style="display: none;">
-        <p>No cards in the council at the moment.</p>
-      </div>
-      <div id="council-factions" style="display: none;">
-        <!-- Council cards will be displayed here -->
-      </div>
-    </div>
-  </div>
-  
   <div id="gameplay-container">
   <div id="gameplay-options">
     <p><b id="option-desc" class="text-center"></b></p>
@@ -236,6 +216,26 @@
         <td id="faction-total-10">0</td>
       </tr>
     </table>
+  </div>
+
+  <!-- Council View Button and Panel -->
+  <div id="council-controls">
+    <button id="view-council-btn" class="bgabutton bgabutton_blue">View Council</button>
+  </div>
+  
+  <div id="council-panel" class="whiteblock" style="display: none;">
+    <div class="council-panel-header">
+      <p><b>Council Cards</b></p>
+      <button id="hide-council-btn" class="bgabutton bgabutton_red">Hide Council</button>
+    </div>
+    <div id="council-content">
+      <div id="council-message" class="text-center" style="display: none;">
+        <p>No cards in the council</p>
+      </div>
+      <div id="council-factions" style="display: none;">
+        <!-- Council cards will be displayed here -->
+      </div>
+    </div>
   </div>
 </div>
 

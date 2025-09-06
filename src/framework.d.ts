@@ -62,7 +62,7 @@ interface Dojo {
     create: Function;
 }
 
-type Gamestate = any; // TODO
+// type Gamestate = any; // TODO - commented out to avoid conflict with bga-animations
 
 interface Player {
     beginner: boolean;

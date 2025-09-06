@@ -30,6 +30,8 @@
         "node_modules/bga-cards/src/stocks/manual-position-stock.ts",
         "node_modules/bga-cards/src/sort.ts",
         "node_modules/bga-cards/src/card-manager.ts",
+        "node_modules/bga-dice/src/die.ts",
+        "node_modules/bga-dice/src/animations.ts",
         "node_modules/bga-dice/src/dice-manager.ts",
         "node_modules/bga-dice/src/dice/die6.ts",
         "node_modules/bga-dice/src/stocks/dice-stock.ts",

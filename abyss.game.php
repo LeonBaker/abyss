@@ -255,6 +255,7 @@ class Abyss extends Table {
 		$result['lord_deck'] = Lord::getDeckSize();
 		$result['ally_explore_slots'] = Ally::getExploreSlots();
 		$result['ally_council_slots'] = Ally::getCouncilSlots();
+		$result['ally_council_cards'] = Ally::getCouncilCards();
 		$result['ally_deck'] = Ally::getDeckSize();
 		$result['threat_level'] = intval(self::getGameStateValue('threat_level'));
 		$result['location_deck'] = Location::getDeckSize();

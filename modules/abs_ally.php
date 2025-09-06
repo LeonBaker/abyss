@@ -120,6 +120,17 @@ class Ally {
     return self::getDeckSize();
   }
 
+  public static function getCouncilCards() {
+    $councilCards = [];
+    
+    for ($faction = 0; $faction <= 4; $faction++) {
+      $allies = self::$game->getCollection( "SELECT * FROM ally WHERE (place = 6 AND faction = $faction) OR place = 100 + $faction ORDER BY ally_id" );
+      $councilCards[$faction] = self::typedAllies($allies);
+    }
+    
+    return $councilCards;
+  }
+
   public static function getPlayerHandSize( $player_id ) {
     return intval(Abyss::getValue("SELECT COUNT(*) FROM ally WHERE place = -" . $player_id . " AND NOT affiliated"));
   }

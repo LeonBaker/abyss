@@ -92,11 +92,31 @@
       </div>
       <div style="display: none"><input id="modified-layout-checkbox" type="checkbox" checked> Modified layout</div>
       <div id="player-panel-holder"></div>
+      </div>
     </div>
   </div>
-</div>
-
-<div id="gameplay-container">
+  
+  <!-- Council View Button and Panel -->
+  <div id="council-controls" class="text-center" style="margin: 10px 0;">
+    <button id="view-council-btn" class="bgabutton bgabutton_blue">View Council</button>
+  </div>
+  
+  <div id="council-panel" class="whiteblock" style="display: none;">
+    <div class="council-panel-header">
+      <h3>Council Cards</h3>
+      <button id="hide-council-btn" class="bgabutton bgabutton_red">Hide</button>
+    </div>
+    <div id="council-content">
+      <div id="council-message" class="text-center" style="display: none;">
+        <p>No cards in the council at the moment.</p>
+      </div>
+      <div id="council-factions" style="display: none;">
+        <!-- Council cards will be displayed here -->
+      </div>
+    </div>
+  </div>
+  
+  <div id="gameplay-container">
   <div id="gameplay-options">
     <p><b id="option-desc" class="text-center"></b></p>
     <br>

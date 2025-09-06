@@ -6,7 +6,9 @@
   "scripts": {
     "build:ts": "tsc",
     "build:scss": "sass --no-source-map src/abyss.scss abyss.css",
-    "watch:ts": "tsc --watch"
+    "watch:ts": "tsc --watch",
+    "watch:scss": "sass --no-source-map --watch src/abyss.scss abyss.css",
+    "watch": "npm run watch:ts & npm run watch:scss"
   },
   "author": "",
   "license": "ISC",

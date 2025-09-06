@@ -232,6 +232,10 @@ class Abyss implements AbyssGame {
         // Clickers
         document.getElementById('explore-track-deck').addEventListener('click', e => this.onClickExploreDeck(e));
         document.getElementById('council-track').addEventListener('click', e => this.onClickCouncilTrack(e));
+        
+        // Council panel event listeners
+        document.getElementById('view-council-btn').addEventListener('click', e => this.onClickViewCouncil(e));
+        document.getElementById('hide-council-btn').addEventListener('click', e => this.onClickHideCouncil(e));
 
         // Tooltips
         // Hide this one, because it doesn't line up due to Zoom
@@ -2281,7 +2285,18 @@ class Abyss implements AbyssGame {
                         // Animate to the council!
                         let deck = dojo.query('#council-track .slot-' + faction);
                         this.councilStacks[faction].addCard(ally, null, { visible: false })
-                            .then(() => this.setDeckSize(deck, +dojo.attr(deck[0], 'data-size') + 1));
+                            .then(() => {
+                                this.setDeckSize(deck, +dojo.attr(deck[0], 'data-size') + 1);
+                                // Update council slots count
+                                this.gamedatas.ally_council_slots[faction] = +dojo.attr(deck[0], 'data-size') + 1;
+                                // Add the card to council cards data
+                                if (!this.gamedatas.ally_council_cards[faction]) {
+                                    this.gamedatas.ally_council_cards[faction] = [];
+                                }
+                                this.gamedatas.ally_council_cards[faction].push(ally);
+                                // Refresh council panel if it's visible
+                                this.refreshCouncilPanel();
+                            });
                         delay += 200;
                     }
                 } else {
@@ -2373,6 +2388,15 @@ class Abyss implements AbyssGame {
         var deck = dojo.query('#council-track .slot-' + faction);
         this.setDeckSize(deck, 0);
         this.allyDiscardCounter.setValue(notif.args.allyDiscardSize);
+        
+        // Update council slots count
+        this.gamedatas.ally_council_slots[faction] = 0;
+        
+        // Clear council cards data for this faction
+        this.gamedatas.ally_council_cards[faction] = [];
+        
+        // Refresh council panel if it's visible
+        this.refreshCouncilPanel();
     }
 
     notif_requestSupport( notif: Notif<NotifRequestSupportArgs> ) {
@@ -2381,6 +2405,12 @@ class Abyss implements AbyssGame {
         var num = notif.args.num;
         let deck = dojo.query('#council-track .slot-' + faction);
         this.setDeckSize(deck, 0);
+
+        // Update council slots count
+        this.gamedatas.ally_council_slots[faction] = 0;
+
+        // Clear council cards data for this faction
+        this.gamedatas.ally_council_cards[faction] = [];
 
         // Add cards to the player's hand
         if (player_id != this.getPlayerId()) {
@@ -2395,6 +2425,9 @@ class Abyss implements AbyssGame {
         }
 
         this.organisePanelMessages();
+        
+        // Refresh council panel if it's visible
+        this.refreshCouncilPanel();
     }
 
     notif_requestSupportCards( notif: Notif<NotifRequestSupportCardsArgs> ) {
@@ -2603,6 +2636,18 @@ class Abyss implements AbyssGame {
 
         var deck = dojo.query('#council-track .slot-' + notif.args.faction);
         this.setDeckSize(deck, notif.args.deckSize);
+        
+        // Update council slots count
+        this.gamedatas.ally_council_slots[notif.args.faction] = notif.args.deckSize;
+        
+        // Add the card to council cards data
+        if (!this.gamedatas.ally_council_cards[notif.args.faction]) {
+            this.gamedatas.ally_council_cards[notif.args.faction] = [];
+        }
+        this.gamedatas.ally_council_cards[notif.args.faction].push(notif.args.ally);
+        
+        // Refresh council panel if it's visible
+        this.refreshCouncilPanel();
     }
 
     // when a Leviathan inflicts damage to the player (with action needed)
@@ -2694,6 +2739,118 @@ class Abyss implements AbyssGame {
             console.error(log,args,"Exception thrown", e.stack);
         }
         return (this as any).inherited(arguments);
+    }
+
+    // Council panel methods
+    onClickViewCouncil(evt) {
+        dojo.stopEvent(evt);
+        this.showCouncilPanel();
+    }
+
+    onClickHideCouncil(evt) {
+        dojo.stopEvent(evt);
+        this.hideCouncilPanel();
+    }
+
+    showCouncilPanel() {
+        const panel = document.getElementById('council-panel');
+        const message = document.getElementById('council-message');
+        const factions = document.getElementById('council-factions');
+        
+        // Check if there are any council cards by looking at the deck sizes
+        const hasCards = this.gamedatas.ally_council_slots.some(count => count > 0);
+        
+        if (hasCards) {
+            message.style.display = 'none';
+            factions.style.display = 'block';
+            this.renderCouncilCards();
+        } else {
+            message.style.display = 'block';
+            factions.style.display = 'none';
+        }
+        
+        panel.style.display = 'block';
+    }
+
+    hideCouncilPanel() {
+        const panel = document.getElementById('council-panel');
+        panel.style.display = 'none';
+    }
+
+    renderCouncilCards() {
+        const factionsContainer = document.getElementById('council-factions');
+        factionsContainer.innerHTML = '';
+        
+        const factionNames = [
+            'Jellyfish',
+            'Crab', 
+            'Seahorse',
+            'Shellfish',
+            'Squid'
+        ];
+        
+        const factionColors = [
+            'purple',
+            'red',
+            '#999900',
+            'green',
+            'blue'
+        ];
+        
+        for (let faction = 0; faction <= 4; faction++) {
+            const cards = this.gamedatas.ally_council_cards[faction] || [];
+            const count = cards.length;
+            
+            if (count > 0) {
+                const factionDiv = document.createElement('div');
+                factionDiv.className = `council-faction faction-${faction}`;
+                
+                const header = document.createElement('div');
+                header.className = 'faction-header';
+                header.style.color = factionColors[faction];
+                header.textContent = `${factionNames[faction]} (${count})`;
+                
+                const cardsContainer = document.createElement('div');
+                cardsContainer.className = 'faction-cards';
+                
+                // Show actual card details if available, otherwise show placeholders
+                cards.forEach((card, i) => {
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'council-card';
+                    
+                    // Add faction class for coloring
+                    if (card && card.faction !== null && card.faction !== undefined) {
+                        cardDiv.classList.add(`faction-${card.faction}`);
+                    } else {
+                        // Kraken cards (faction 10) or monsters
+                        cardDiv.classList.add('faction-10');
+                    }
+                    
+                    if (card && card.value !== undefined) {
+                        cardDiv.textContent = card.value.toString();
+                        cardDiv.title = `${factionNames[faction]} - Value: ${card.value}`;
+                        // Add tooltip with card details
+                        this.setTooltip(cardDiv, this.allyManager.renderTooltip(card));
+                    } else {
+                        cardDiv.textContent = '?';
+                        cardDiv.title = `${factionNames[faction]} - Card ${i + 1}`;
+                    }
+                    
+                    cardsContainer.appendChild(cardDiv);
+                });
+                
+                factionDiv.appendChild(header);
+                factionDiv.appendChild(cardsContainer);
+                factionsContainer.appendChild(factionDiv);
+            }
+        }
+    }
+
+    refreshCouncilPanel() {
+        const panel = document.getElementById('council-panel');
+        if (panel && panel.style.display !== 'none') {
+            this.showCouncilPanel();
+        }
     }
 
 }

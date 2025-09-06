@@ -104,6 +104,7 @@ interface AbyssGamedatas {
     lord_slots: AbyssLord[];
     ally_explore_slots: AbyssAlly[];
     ally_council_slots: number[];
+    ally_council_cards: { [faction: number]: AbyssAlly[] };
     lord_deck: number;
     ally_deck: number;
     threat_level: number;

@@ -1130,6 +1130,7 @@ class Abyss implements AbyssGame {
             this.allyCounters[playerId] = new ebg.counter();
             this.allyCounters[playerId].create(`allycount_p${player.id}`);
             this.allyCounters[playerId].setValue(player.hand_size);
+            this.updateAllyCountHighlight(playerId);
             this.lordCounters[playerId] = new ebg.counter();
             this.lordCounters[playerId].create(`lordcount_p${player.id}`);
             this.lordCounters[playerId].setValue(player.lords.length);
@@ -1213,6 +1214,19 @@ class Abyss implements AbyssGame {
 
     private incAllyCount(playerId: number, inc: number) {
         this.allyCounters[playerId].setValue(this.allyCounters[playerId].getValue() + inc);
+        this.updateAllyCountHighlight(playerId);
+    }
+
+    private updateAllyCountHighlight(playerId: number) {
+        const allyCountElement = document.getElementById(`allycount_p${playerId}`);
+        if (allyCountElement) {
+            const count = this.allyCounters[playerId].getValue();
+            if (count >= 12) {
+                allyCountElement.classList.add('ally-count-highlight');
+            } else {
+                allyCountElement.classList.remove('ally-count-highlight');
+            }
+        }
     }
 
     private incLordCount(playerId: number, inc: number) {

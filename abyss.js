@@ -4795,6 +4795,7 @@ var Abyss = /** @class */ (function () {
             _this.allyCounters[playerId] = new ebg.counter();
             _this.allyCounters[playerId].create("allycount_p".concat(player.id));
             _this.allyCounters[playerId].setValue(player.hand_size);
+            _this.updateAllyCountHighlight(playerId);
             _this.lordCounters[playerId] = new ebg.counter();
             _this.lordCounters[playerId].create("lordcount_p".concat(player.id));
             _this.lordCounters[playerId].setValue(player.lords.length);
@@ -4864,6 +4865,19 @@ var Abyss = /** @class */ (function () {
     };
     Abyss.prototype.incAllyCount = function (playerId, inc) {
         this.allyCounters[playerId].setValue(this.allyCounters[playerId].getValue() + inc);
+        this.updateAllyCountHighlight(playerId);
+    };
+    Abyss.prototype.updateAllyCountHighlight = function (playerId) {
+        var allyCountElement = document.getElementById("allycount_p".concat(playerId));
+        if (allyCountElement) {
+            var count = this.allyCounters[playerId].getValue();
+            if (count >= 12) {
+                allyCountElement.classList.add('ally-count-highlight');
+            }
+            else {
+                allyCountElement.classList.remove('ally-count-highlight');
+            }
+        }
     };
     Abyss.prototype.incLordCount = function (playerId, inc) {
         this.lordCounters[playerId].setValue(this.lordCounters[playerId].getValue() + inc);

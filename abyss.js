@@ -4546,13 +4546,20 @@ var Abyss = /** @class */ (function () {
                     }
                     break;
                 case 'control':
-                    var s = _('Draw ${n}');
+                    // Check if there are available locations to select
+                    var availableLocations = __spreadArray(__spreadArray([], this.visibleLocations.getCards(), true), this.visibleLocationsOverflow.getCards(), true).filter(function (location) { return !_this.locationManager.getCardElement(location).classList.contains('unavailable'); });
+                    if (availableLocations.length > 0) {
+                        // Show option to select existing location
+                        this.addActionButton('button_select_location', _('Select Existing Location'), function () { return _this.scrollToLocations(); });
+                    }
+                    // Show draw options with clearer text
                     var location_deck = dojo.query('.location.location-back')[0];
                     var location_deck_size = +dojo.attr(location_deck, 'data-size');
                     for (var i_4 = 1; i_4 <= 4; i_4++) {
                         if (location_deck_size < i_4)
                             continue;
-                        this.addActionButton('button_draw_' + i_4, dojo.string.substitute(s, { n: i_4 }), 'onDrawLocation');
+                        var buttonText = i_4 === 1 ? _('Draw 1 New Location') : _('Draw ${n} New Locations');
+                        this.addActionButton('button_draw_' + i_4, dojo.string.substitute(buttonText, { n: i_4 }), 'onDrawLocation');
                     }
                     break;
                 case 'martialLaw':
@@ -5412,6 +5419,16 @@ var Abyss = /** @class */ (function () {
         this.takeAction('drawLocations', {
             num: num,
         });
+    };
+    Abyss.prototype.scrollToLocations = function () {
+        // Find the locations panel and scroll to it
+        var locationsPanel = document.getElementById('locations-holder') || document.getElementById('visible-locations-stock');
+        if (locationsPanel) {
+            locationsPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
     };
     Abyss.prototype.payMartialLaw = function () {
         if (!this.checkAction('payMartialLaw')) {

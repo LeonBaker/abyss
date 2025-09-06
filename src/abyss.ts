@@ -839,12 +839,24 @@ class Abyss implements AbyssGame {
                     }
                     break;
                 case 'control':
-                    var s = _('Draw ${n}');
+                    // Check if there are available locations to select
+                    const availableLocations = [
+                        ...this.visibleLocations.getCards(),
+                        ...this.visibleLocationsOverflow.getCards(),
+                    ].filter(location => !this.locationManager.getCardElement(location).classList.contains('unavailable'));
+                    
+                    if (availableLocations.length > 0) {
+                        // Show option to select existing location
+                        (this as any).addActionButton('button_select_location', _('Select Existing Location'), () => this.scrollToLocations());
+                    }
+                    
+                    // Show draw options with clearer text
                     let location_deck = dojo.query('.location.location-back')[0];
                     let location_deck_size = +dojo.attr(location_deck, 'data-size');
                     for (let i = 1; i <= 4; i++) {
                         if (location_deck_size < i) continue;
-                        (this as any).addActionButton( 'button_draw_' + i, dojo.string.substitute( s, {n: i} ), 'onDrawLocation' );
+                        const buttonText = i === 1 ? _('Draw 1 New Location') : _('Draw ${n} New Locations');
+                        (this as any).addActionButton( 'button_draw_' + i, dojo.string.substitute( buttonText, {n: i} ), 'onDrawLocation' );
                     }
                     break;
                 case 'martialLaw':
@@ -1844,6 +1856,17 @@ class Abyss implements AbyssGame {
         this.takeAction('drawLocations', {
             num,
         });
+    }
+
+    scrollToLocations() {
+        // Find the locations panel and scroll to it
+        const locationsPanel = document.getElementById('locations-holder') || document.getElementById('visible-locations-stock');
+        if (locationsPanel) {
+            locationsPanel.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }
     }
 
     private payMartialLaw() {

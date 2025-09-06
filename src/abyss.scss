@@ -1516,6 +1516,11 @@ html a.bgabutton.affiliate-button:hover {
     border-radius: 12px;
 }
 
+/* Highlight for players who have passed (can no longer purchase) */
+.player-passed {
+    opacity: 0.25;
+}
+
 #ally-discard-size.deck-size {
   bottom: -28px;
   left: 0px;

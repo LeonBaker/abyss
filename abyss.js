@@ -4309,14 +4309,30 @@ var Abyss = /** @class */ (function () {
         }
     };
     Abyss.prototype.onEnteringPurchaseExplore = function (args) {
+        // Clear any existing highlighting
+        this.clearPassedPlayerHighlighting();
         // Disable players who have passed
         this.enableAllPlayerPanels();
         for (var iPlayer in args.passed_players) {
             this.disablePlayerPanel(args.passed_players[iPlayer]);
+            // Add visual highlighting for passed players
+            this.highlightPassedPlayer(args.passed_players[iPlayer]);
         }
         // Underline the first player
         var first_player = args.first_player;
         dojo.query('a', $('player_name_' + first_player)).style('text-decoration', 'underline');
+    };
+    Abyss.prototype.highlightPassedPlayer = function (playerId) {
+        var playerNameElement = document.getElementById("player_name_".concat(playerId));
+        if (playerNameElement) {
+            playerNameElement.classList.add('player-passed');
+        }
+    };
+    Abyss.prototype.clearPassedPlayerHighlighting = function () {
+        // Remove highlighting from all players
+        document.querySelectorAll('.player-passed').forEach(function (element) {
+            element.classList.remove('player-passed');
+        });
     };
     Abyss.prototype.onEnteringChooseLeviathanToFight = function (args) {
         if (this.isCurrentPlayerActive()) {
@@ -4367,6 +4383,7 @@ var Abyss = /** @class */ (function () {
             case 'explore3':
                 this.enableAllPlayerPanels();
                 dojo.query('.player-name a').style('text-decoration', '');
+                this.clearPassedPlayerHighlighting();
                 break;
             case 'lord116':
                 this.onLeavingLord116();

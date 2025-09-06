@@ -743,7 +743,6 @@ body > .bga-dice_die {
 /* Active Lords Panel Styles */
 .active-lords {
   margin: 10px 0;
-  padding: 10px;
 }
 
 .active-lords-player {
@@ -2910,6 +2909,11 @@ html a.bgabutton.affiliate-button:hover {
   font-weight: bold;
   padding: 2px 6px;
   border-radius: 12px;
+}
+
+/* Highlight for players who have passed (can no longer purchase) */
+.player-passed {
+  opacity: 0.25;
 }
 
 #ally-discard-size.deck-size {

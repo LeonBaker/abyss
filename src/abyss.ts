@@ -606,15 +606,34 @@ class Abyss implements AbyssGame {
     }
 
     private onEnteringPurchaseExplore(args: EnteringPurchaseArgs) {
+        // Clear any existing highlighting
+        this.clearPassedPlayerHighlighting();
+        
         // Disable players who have passed
         (this as any).enableAllPlayerPanels();
         for( var iPlayer in args.passed_players ) {
             (this as any).disablePlayerPanel( args.passed_players[iPlayer] );
+            // Add visual highlighting for passed players
+            this.highlightPassedPlayer(args.passed_players[iPlayer]);
         }
         
         // Underline the first player
         let first_player = args.first_player;
         dojo.query('a', $('player_name_' + first_player)).style('text-decoration', 'underline');
+    }
+
+    private highlightPassedPlayer(playerId: number) {
+        const playerNameElement = document.getElementById(`player_name_${playerId}`);
+        if (playerNameElement) {
+            playerNameElement.classList.add('player-passed');
+        }
+    }
+
+    private clearPassedPlayerHighlighting() {
+        // Remove highlighting from all players
+        document.querySelectorAll('.player-passed').forEach(element => {
+            element.classList.remove('player-passed');
+        });
     }
 
     private onEnteringChooseLeviathanToFight(args: EnteringChooseLeviathanToFightArgs) {
@@ -664,6 +683,7 @@ class Abyss implements AbyssGame {
             case 'purchase': case 'explore': case 'explore2': case 'explore3':
                 (this as any).enableAllPlayerPanels();
                 dojo.query('.player-name a').style('text-decoration', '');
+                this.clearPassedPlayerHighlighting();
                 break;
             case 'lord116':
                 this.onLeavingLord116();
